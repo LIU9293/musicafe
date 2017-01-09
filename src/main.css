@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+body *{
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.title-primary{
+  font-size: 36px;
+  color: #131313;
+  margin: 20px 0;
+}
+
+.leftPanel{
+  position: fixed;
+  width: 320px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-x: hidden;
+}
+
+.rightPanel{
+  margin-left: 320px;
+  padding: 0 2em;
+}
+
+.content{
+  max-width: 1000px;
+  margin: 20px auto;
+}
+
+.search{
+  width: 100%;
+  padding: 0 20px;
+}
+
+.bottom{
+  width: 100%;
+  height: 80px;
+  margin: 20px 0 0 0;
+  border-top: 1px solid rgba(100, 100, 100, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addSongButton{
+  height: 140px;
+  width: 140px;
+  position: absolute;
+  top: 0; left: 0;
+  background-color: transparent;
+  color: transparent;
+  padding: 50px;
+  font-size: 30px;
+  text-align: center;
+}
+.addSongButton:hover{
+  background-color: rgba(50, 50, 50, 0.5);
+  color: #eee;
+  cursor: pointer;
+}
+
+.ant-tabs-nav .ant-tabs-tab{
+  height: auto;
+}
+.ant-tabs-bar{
+  margin-bottom: 0;
+}
+.deleteSongButton:hover{
+  background-color: rgba(200, 200, 200, 0.1);
+  transition: 'all 0.2s';
+}
+.audio-player{
+  position: absolute;
+  width: 320px;
+  bottom: 0;
+}
+.ant-slider{
+  background-color: transparent;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+.ant-slider:hover{
+  background-color: transparent;
+}
+.ant-slider-step{
+  background: rgba(200, 200, 200, 0.3);
+}
+.ant-tabs-nav .ant-tabs-tab-active{
+  color: #fff;
+}
+.ant-tabs-nav .ant-tabs-tab-active:hover{
+  color: #ccc;
+}
+.ant-tabs-ink-bar{
+  background-color: #fff;
+}
