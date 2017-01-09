@@ -7,7 +7,7 @@ var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var url = require('url');
 var paths = require('./paths');
 var getClientEnvironment = require('./env');
-
+var path = require('path');
 
 
 function ensureSlash(path, needsSlash) {
@@ -121,9 +121,6 @@ module.exports = {
         ],
         loader: 'url',
         query: {
-          plugins: [
-            ['import', [{ libraryName: "antd", style: 'css' }]],
-          ],
           limit: 10000,
           name: 'static/media/[name].[hash:8].[ext]'
         }
@@ -131,9 +128,13 @@ module.exports = {
       // Process JS with Babel.
       {
         test: /\.(js|jsx)$/,
-        include: paths.appSrc,
+        include: [paths.appSrc, path.resolve(paths.appNodeModules, 'react-icons')],
         loader: 'babel',
-
+        query: {
+          plugins: [
+            ['import', [{ libraryName: "antd", style: 'css' }]],
+          ]
+        }
       },
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.
