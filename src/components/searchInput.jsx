@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { searchSong, searchAlbum, searchPlaylist } from '../redux/action/fetch';
 import Checkbox from './checkbox';
-import { message } from 'antd';
+import { notification } from 'antd';
 
 const styles = {
   container: {
@@ -63,47 +63,68 @@ class Search extends Component {
                 if(res.success){
                   this.props.updateResult(i, 'song', res)
                 } else {
-                  message.error(`错误：${res.message}`);
+                  notification.open({
+                    message: '出错啦',
+                    description: res.message,
+                  });
                 }
               })
               .catch(err => {
-                message.error(`错误：${err}`);
-              })
+                notification.open({
+                  message: '出错啦',
+                  description: err,
+                });
+              });
             break;
           case 'album':
             searchAlbum(i, this.state.value, 12, 1)
               .then(res => {
                 if(res.success){
-                  this.props.updateResult(i, 'album', res)
+                  this.props.updateResult(i, 'album', res);
                 } else {
-                  message.error(`错误：${res.message}`);
+                  notification.open({
+                    message: '出错啦',
+                    description: res.message,
+                  });
                 }
               })
               .catch(err => {
-                message.error(`错误：${err}`);
-              })
+                notification.open({
+                  message: '出错啦',
+                  description: err,
+                });
+              });
             break;
           case 'playlist':
             searchPlaylist(i, this.state.value, 12, 1)
               .then(res => {
                 if(res.success){
-                  this.props.updateResult(i, 'playlist', res)
+                  this.props.updateResult(i, 'playlist', res);
                 } else {
-                  message.error(`错误：${res.message}`);
+                  notification.open({
+                    message: '出错啦',
+                    description: res.message,
+                  });
                 }
               })
               .catch(err => {
-                message.error(`错误：${err}`);
-              })
+                notification.open({
+                  message: '出错啦',
+                  description: err,
+                });
+              });
             break;
           default:
             break;
         }
         return null;
       });
-      browserHistory.push(`/search/${this.props.searchType}`)
+      browserHistory.push(`/search/${this.props.searchType}`);
     } else {
-      console.error('no search key ~')
+      notification.open({
+        message: '出错啦',
+        description: '请输入搜索内容！',
+      });
     }
   }
 
@@ -115,11 +136,11 @@ class Search extends Component {
           xiamiDisabled: false,
           qqDisabled: false,
           neteaseDisabled: false,
-        })
+        });
       }
       this.setState({
         searchVendor: this.state.searchVendor.concat([vendor])
-      })
+      });
     } else {
       if(this.state.searchVendor.length === 2){
         // if only two left and uncheck one, disable another
@@ -127,11 +148,11 @@ class Search extends Component {
         console.log(another + 'Disabled');
         this.setState({
           [another + 'Disabled']: true
-        })
-      };
+        });
+      }
       this.setState({
         searchVendor: this.state.searchVendor.filter(i => i !== vendor)
-      })
+      });
     }
   }
 
@@ -178,8 +199,8 @@ class Search extends Component {
 const mapStateToProps = (state) => {
   return {
     searchType: state.searchKey.type
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -191,25 +212,25 @@ const mapDispatchToProps = (dispatch) => {
     updateResult: (vendor, type, data) => {
       switch (type) {
         case 'song':
-          dispatch({type: 'SEARCH_RESULT_UPDATE_SONG', data: data, vendor: vendor})
+          dispatch({type: 'SEARCH_RESULT_UPDATE_SONG', data: data, vendor: vendor});
           break;
         case 'artist':
-          dispatch({type: 'SEARCH_RESULT_UPDATE_ARTIST', data: data, vendor: vendor})
+          dispatch({type: 'SEARCH_RESULT_UPDATE_ARTIST', data: data, vendor: vendor});
           break;
         case 'album':
-          dispatch({type: 'SEARCH_RESULT_UPDATE_ALBUM', data: data, vendor: vendor})
+          dispatch({type: 'SEARCH_RESULT_UPDATE_ALBUM', data: data, vendor: vendor});
           break;
         case 'playlist':
-          dispatch({type: 'SEARCH_RESULT_UPDATE_PLAYLIST', data: data, vendor: vendor})
+          dispatch({type: 'SEARCH_RESULT_UPDATE_PLAYLIST', data: data, vendor: vendor});
           break;
         default:
           return;
       }
     },
     clearResult: (t) => {
-      dispatch({type: 'SEARCH_RESULT_CLEAR', t: t})
+      dispatch({type: 'SEARCH_RESULT_CLEAR', t: t});
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
