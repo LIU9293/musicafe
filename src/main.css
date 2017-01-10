@@ -101,3 +101,15 @@ body *{
 .ant-tabs-ink-bar{
   background-color: #fff;
 }
+
+.ant-select-selection{
+  border: none;
+}
+.ant-select-open .ant-select-selection{
+  border: none;
+  box-shadow: none;
+}
+.ant-select-focused .ant-select-selection .ant-select-selection:focus{
+  border: none;
+  box-shadow: none;
+}

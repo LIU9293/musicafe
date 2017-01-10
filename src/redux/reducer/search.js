@@ -26,7 +26,7 @@ export const searchKey = (state = searchKeyInitState, action) => {
     case 'SEARCH_KEY_UPDATE_KEY':
       return {...state, key: action.key}
     case 'SEARCH_KEY_UPDATE_TYPE':
-      return {...state, type: action.type}
+      return {...state, type: action.searchType}
     default:
       return state;
   }

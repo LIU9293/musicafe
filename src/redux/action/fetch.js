@@ -1,8 +1,6 @@
-import 'whatwg-fetch';
-const Promise = require('promise');
-const base = 'http://118.178.190.101/api/';
+const base = process.env.fetchURL || 'https://musicafe.co/api/';
 
-const searchSong = (vendor, key, limit, page) => {
+const searchsong = (vendor, key, limit, page) => {
   return new Promise((resolve, reject) => {
     fetch(`${base}search/song/${vendor}?key=${key}&limit=${limit}&page=${page}`)
       .then(res => res.json())
@@ -11,7 +9,7 @@ const searchSong = (vendor, key, limit, page) => {
   });
 }
 
-const searchAlbum = (vendor, key, limit, page) => {
+const searchalbum = (vendor, key, limit, page) => {
   return new Promise((resolve, reject) => {
     fetch(`${base}search/album/${vendor}?key=${key}&limit=${limit}&page=${page}`)
       .then(res => res.json())
@@ -20,7 +18,7 @@ const searchAlbum = (vendor, key, limit, page) => {
   });
 }
 
-const searchPlaylist = (vendor, key, limit, page) => {
+const searchplaylist = (vendor, key, limit, page) => {
   return new Promise((resolve, reject) => {
     fetch(`${base}search/playlist/${vendor}?key=${key}&limit=${limit}&page=${page}`)
       .then(res => res.json())
@@ -29,7 +27,7 @@ const searchPlaylist = (vendor, key, limit, page) => {
   });
 }
 
-const getSong = (vendor, id) => {
+const getsong = (vendor, id) => {
   return new Promise((resolve, reject) => {
     fetch(`${base}get/song/${vendor}?id=${id}`)
       .then(res => res.json())
@@ -38,7 +36,7 @@ const getSong = (vendor, id) => {
   });
 }
 
-const getAlbum = (vendor, id) => {
+const getalbum = (vendor, id) => {
   return new Promise((resolve, reject) => {
     fetch(`${base}get/song/${vendor}?id=${id}`)
       .then(res => res.json())
@@ -47,7 +45,7 @@ const getAlbum = (vendor, id) => {
   });
 }
 
-const getPlaylist = (vendor, id) => {
+const getplaylist = (vendor, id) => {
   return new Promise((resolve, reject) => {
     fetch(`${base}get/song/${vendor}?id=${id}`)
       .then(res => res.json())
@@ -57,10 +55,10 @@ const getPlaylist = (vendor, id) => {
 }
 
 module.exports = {
-  searchSong,
-  searchAlbum,
-  searchPlaylist,
-  getSong,
-  getAlbum,
-  getPlaylist,
+  searchsong,
+  searchalbum,
+  searchplaylist,
+  getsong,
+  getalbum,
+  getplaylist,
 }

@@ -60,7 +60,7 @@ class SearchResultRow extends Component {
     if(nextProps.searchKey !== this.props.searchKey){
       this.setState({
         pageIndex: 1
-      })
+      });
     }
   }
 
@@ -93,35 +93,35 @@ class SearchResultRow extends Component {
             className="addSongButton"
           >+</div>
         </div>
-      )
+      );
     });
   }
 
   onPageChange(page){
     const { vendor, type } = this.props;
-    if(this.props.data[type][vendor].songList.length < (page*this.numOfSongs)){
-      searchSong(vendor, this.props.searchKey, this.numOfSongs, page)
+    if(this.props.data[type][vendor].songList.length < (page*12)){
+      searchSong(vendor, this.props.searchKey, 12, page)
         .then(res => {
           if(res.success){
             this.props.updateResult(vendor, type, {
               ...this.props.data[type][vendor],
               songList: this.props.data[type][vendor].songList.concat(res.songList)
             });
-            this.setState({pageIndex: page})
+            this.setState({pageIndex: page});
           } else {
             message.error(`错误：${res.message}`);
           }
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err));
     }
-    this.setState({pageIndex: page})
+    this.setState({pageIndex: page});
   }
 
   render() {
     const { vendor, type } = this.props;
     let lists;
     if(type === 'song'){
-      lists = this.renderSongList()
+      lists = this.renderSongList();
     }
     return (
       <div>
@@ -142,38 +142,37 @@ class SearchResultRow extends Component {
 const mapStateToProps = (state) => {
   return {
     data: state.searchResult,
-    type: state.searchKey.type,
     searchKey: state.searchKey.key,
     playlistID: state.playStatus.playlistID,
     playStatus: state.playStatus.status
-  }
-}
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     addSong: (song) => {dispatch({type: 'INSERT_ONE_SONG', playlistID: 0, song: song})},
     updateResult: (vendor, type, data) => {
       switch (type) {
         case 'song':
-          dispatch({type: 'SEARCH_RESULT_UPDATE_SONG', data: data, vendor: vendor})
+          dispatch({type: 'SEARCH_RESULT_UPDATE_SONG', data: data, vendor: vendor});
           break;
         case 'artist':
-          dispatch({type: 'SEARCH_RESULT_UPDATE_ARTIST', data: data, vendor: vendor})
+          dispatch({type: 'SEARCH_RESULT_UPDATE_ARTIST', data: data, vendor: vendor});
           break;
         case 'album':
-          dispatch({type: 'SEARCH_RESULT_UPDATE_ALBUM', data: data, vendor: vendor})
+          dispatch({type: 'SEARCH_RESULT_UPDATE_ALBUM', data: data, vendor: vendor});
           break;
         case 'playlist':
-          dispatch({type: 'SEARCH_RESULT_UPDATE_PLAYLIST', data: data, vendor: vendor})
+          dispatch({type: 'SEARCH_RESULT_UPDATE_PLAYLIST', data: data, vendor: vendor});
           break;
         default:
           return;
       }
     },
     updatePlayStatus: (status) => {
-      dispatch({type: 'PLAY_STATUS_UPDATE_STATUS', status})
+      dispatch({type: 'PLAY_STATUS_UPDATE_STATUS', status});
     }
-  }
-}
+  };
+};
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultRow);
