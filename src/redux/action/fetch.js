@@ -1,5 +1,3 @@
-import 'whatwg-fetch';
-const Promise = require('promise');
 const base = 'http://118.178.190.101/api/';
 
 const searchSong = (vendor, key, limit, page) => {
