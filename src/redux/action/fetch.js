@@ -1,4 +1,4 @@
-const base = 'http://118.178.190.101/api/';
+const base = process.env.fetchURL || 'https://musicafe.co/';
 
 const searchSong = (vendor, key, limit, page) => {
   return new Promise((resolve, reject) => {
