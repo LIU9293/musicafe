@@ -1,4 +1,4 @@
-const base = process.env.fetchURL || 'https://musicafe.co/';
+const base = process.env.fetchURL || 'https://musicafe.co/api/';
 
 const searchSong = (vendor, key, limit, page) => {
   return new Promise((resolve, reject) => {
