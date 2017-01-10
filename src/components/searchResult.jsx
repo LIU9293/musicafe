@@ -11,9 +11,9 @@ const styles = {
 
 class SearchResult extends React.Component {
   render () {
-    let rows = Object.keys(this.props.data[this.props.searchType]).map((item, index) => {
+    let rows = Object.keys(this.props.data[this.props.type]).map((item, index) => {
       return (
-        <SearchResultRow vendor={item} type={this.props.searchType} key={index} />
+        <SearchResultRow vendor={item} type={this.props.type} key={index} />
       )
     })
 
@@ -27,8 +27,7 @@ class SearchResult extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    data: state.searchResult,
-    searchType: state.searchKey.type,
+    data: state.searchResult
   }
 }
 

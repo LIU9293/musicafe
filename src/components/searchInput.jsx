@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { searchSong, searchAlbum, searchPlaylist } from '../redux/action/fetch';
+import api from '../redux/action/fetch';
 import Checkbox from './checkbox';
-import { notification } from 'antd';
+import { notification, Select  } from 'antd';
+const Option = Select.Option;
 
 const styles = {
   container: {
@@ -16,8 +17,8 @@ const styles = {
   },
   searchInput: {
     backgroundColor: 'transparent',
-    padding: '10px',
-    width: '100%',
+    padding: '10px 10px 10px 80px',
+    width: '250px',
     cursor: 'text',
     color: 'DarkSlateGray',
     border: 'none',
@@ -27,7 +28,14 @@ const styles = {
     textAlign: 'center',
     borderBottom: `solid 1px LightGrey`,
   },
-}
+  select: {
+    width: '80px',
+    position: 'absolute',
+    left: '0',
+    border: 'none',
+    top: '8px',
+  }
+};
 
 class Search extends Component {
   constructor(props) {
@@ -42,6 +50,7 @@ class Search extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.changeVendor = this.changeVendor.bind(this);
+    this.onChangeSearchType = this.onChangeSearchType.bind(this);
   }
 
   handleInputChange(e) {
@@ -56,67 +65,23 @@ class Search extends Component {
       this.props.updateKey(this.state.value);
       this.props.clearResult(this.props.searchType);
       this.state.searchVendor.map(i => {
-        switch (this.props.searchType) {
-          case 'song':
-            searchSong(i, this.state.value, 12, 1)
-              .then(res => {
-                if(res.success){
-                  this.props.updateResult(i, 'song', res)
-                } else {
-                  notification.open({
-                    message: '出错啦',
-                    description: res.message,
-                  });
-                }
-              })
-              .catch(err => {
+        api[`search${this.props.searchType}`](i, this.state.value, 12, 1)
+          .then(res => {
+              if(res.success){
+                this.props.updateResult(i, this.props.searchType, res);
+              } else {
                 notification.open({
                   message: '出错啦',
-                  description: err,
+                  description: res.message,
                 });
+              }
+            })
+            .catch(err => {
+              notification.open({
+                message: '出错啦',
+                description: err,
               });
-            break;
-          case 'album':
-            searchAlbum(i, this.state.value, 12, 1)
-              .then(res => {
-                if(res.success){
-                  this.props.updateResult(i, 'album', res);
-                } else {
-                  notification.open({
-                    message: '出错啦',
-                    description: res.message,
-                  });
-                }
-              })
-              .catch(err => {
-                notification.open({
-                  message: '出错啦',
-                  description: err,
-                });
-              });
-            break;
-          case 'playlist':
-            searchPlaylist(i, this.state.value, 12, 1)
-              .then(res => {
-                if(res.success){
-                  this.props.updateResult(i, 'playlist', res);
-                } else {
-                  notification.open({
-                    message: '出错啦',
-                    description: res.message,
-                  });
-                }
-              })
-              .catch(err => {
-                notification.open({
-                  message: '出错啦',
-                  description: err,
-                });
-              });
-            break;
-          default:
-            break;
-        }
+            });
         return null;
       });
       browserHistory.push(`/search/${this.props.searchType}`);
@@ -156,6 +121,10 @@ class Search extends Component {
     }
   }
 
+  onChangeSearchType(e){
+    this.props.updateSearchType(e);
+  }
+
   render() {
     return (
       <div className="search" style={styles.container}>
@@ -167,6 +136,11 @@ class Search extends Component {
             value={this.state.value || ''}
             onChange={this.handleInputChange}
           />
+          <Select defaultValue="song" style={styles.select} onChange={this.onChangeSearchType}>
+            <Option value="song">歌曲</Option>
+            <Option value="album">专辑</Option>
+            <Option value="playlist">歌单</Option>
+          </Select>
         </form>
         <div style={{width: '400px', display: 'flex', flexDirection: 'row'}}>
             <Checkbox
@@ -207,6 +181,10 @@ const mapDispatchToProps = (dispatch) => {
     //update redux store => searchKey
     updateKey: (key) => {
       dispatch({type: 'SEARCH_KEY_UPDATE_KEY', key: key});
+    },
+    //update redux store => search type
+    updateSearchType: (searchType) => {
+      dispatch({type: 'SEARCH_KEY_UPDATE_TYPE', searchType});
     },
     //update search result date, store => searchResult
     updateResult: (vendor, type, data) => {
