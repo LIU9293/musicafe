@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Icon } from 'antd';
 
 const styles = {
   row: {
@@ -29,9 +28,6 @@ const styles = {
 }
 
 class SongListHeader extends Component{
-  constructor(props){
-    super(props);
-  }
   render(){
     return(
       <div style={styles.row}>
@@ -44,9 +40,7 @@ class SongListHeader extends Component{
         <div style={styles.artist}>
           音乐人
         </div>
-        <div style={styles.action}>
-          
-        </div>
+        <div style={styles.action}></div>
       </div>
     )
   }

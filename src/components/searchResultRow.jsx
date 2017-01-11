@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import { Pagination, message } from 'antd';
 import { searchsong } from '../redux/action/fetch';
+import { browserHistory } from 'react-router';
 
 const name = {
   qq: 'QQ音乐',
@@ -80,6 +81,14 @@ class SearchResultRow extends Component {
       });
     }
   }
+  
+  pushToAlbumDetail(vendor, id){
+    browserHistory.push(`/album/${vendor}/${id}`);
+  }
+  
+  pushToPlaylistDetail(vendor, id){
+    browserHistory.push(`/playlist/${vendor}/${id}`);
+  }
 
   addSong(vendor, data){
     this.props.addSong({...data, vendor});
@@ -125,9 +134,11 @@ class SearchResultRow extends Component {
       return (
         <div style={{
             ...styles.cell,
-            backgroundImage: `url(${album.cover})`
+            backgroundImage: `url(${album.cover})`,
+            cursor: 'pointer',
           }}
           key={index}
+          onClick={e => this.pushToAlbumDetail(vendor, album.id)}
         >
           <div style={styles.blur}>
             <div style={styles.name}>{album.name}</div>
@@ -145,9 +156,11 @@ class SearchResultRow extends Component {
       return (
         <div style={{
             ...styles.cell,
-            backgroundImage: `url(${playlist.cover})`
+            backgroundImage: `url(${playlist.cover})`,
+            cursor: 'pointer',
           }}
           key={index}
+          onClick={e => this.pushToPlaylistDetail(vendor, playlist.id)}
         >
           <div style={styles.blur}>
             <div style={styles.name}>{playlist.name}</div>
