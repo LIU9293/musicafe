@@ -122,10 +122,7 @@ class Player extends Component{
             });
           });
         } else {
-          notification.open({
-            message: '出错啦',
-            description: res.message,
-          });
+          throw new Error(res.message);
         }
       })
       .catch(err => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon } from 'antd';
+import { Icon, notification } from 'antd';
 import { connect } from 'react-redux';
 
 const styles = {
@@ -39,6 +39,17 @@ class SongListRow extends Component{
     this.addSong = this.addSong.bind(this);
   }
   addSong(vendor, data){
+    const { playlist } = this.props;
+    const songs = playlist['0'].songs;
+    for(let i = 0; i < songs.length; i++){
+      if(songs[i].vendor === vendor && songs[i].id === data.id){
+        notification.warning({
+          message: '出错啦~',
+          description: '歌单里面已经有这首歌了哦!'
+        });
+        return;
+      }
+    }
     if(!data.artists && data.artist){
       data.artists = [...data.artist];
     }
@@ -66,6 +77,7 @@ class SongListRow extends Component{
 
 const mapStateToProps = (state) => {
   return {
+    playlist: state.playlist,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -44,7 +44,7 @@ class PlaylistDetail extends React.Component {
     this.changeSong = this.changeSong.bind(this);
   }
 
-  deleteSong(listID, songID){
+  deleteSong(listID, songID, index){
     if(songID === this.props.playlist[this.props.playlistID].songs[this.props.currentIndex].id){
       /**
        * if we are deleting what we are listened
@@ -56,6 +56,13 @@ class PlaylistDetail extends React.Component {
       } else {
         this.props.changeSong(listID, this.props.currentIndex);
       }
+    }
+    if(this.props.currentIndex > index){
+      /**
+       * if we are deleting what before we are playing
+       * we must change the play index
+       */
+       this.props.changeSong(listID, this.props.currentIndex-1);
     }
     this.props.deleteSong(listID, songID);
   }
@@ -93,7 +100,7 @@ class PlaylistDetail extends React.Component {
             {playing}
           </div>
           <div style={styles.right}>
-            <div style={styles.button} className="deleteSongButton" onClick={() => this.deleteSong(id, item.id)}>
+            <div style={styles.button} className="deleteSongButton" onClick={() => this.deleteSong(id, item.id, index)}>
               <Icon type="close" />
             </div>
           </div>

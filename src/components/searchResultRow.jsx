@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { Pagination, message } from 'antd';
+import { Pagination, message, notification } from 'antd';
 import api from '../redux/action/fetch';
 import { browserHistory } from 'react-router';
 
@@ -87,19 +87,30 @@ class SearchResultRow extends Component {
       });
     }
   }
-  
+
   pushToAlbumDetail(vendor, id){
     browserHistory.push(`/album/${vendor}/${id}`);
   }
-  
+
   pushToPlaylistDetail(vendor, id, title, cover, author){
     this.props.transferData(cover, title, id, author);
     browserHistory.push(`/playlist/${vendor}/${id}`);
   }
 
   addSong(vendor, data){
+    const { playlist } = this.props;
+    const songs = playlist['0'].songs;
+    for(let i = 0; i < songs.length; i++){
+      if(songs[i].vendor === vendor && songs[i].id === data.id){
+        notification.warning({
+          message: '出错啦~',
+          description: '歌单里面已经有这首歌了哦!'
+        });
+        return;
+      }
+    }
     this.props.addSong({...data, vendor});
-    if(this.props.playlistID === 0 && this.props.playStatus === 'stop'){
+    if(this.props.playlistID === 0 && this.props.playStatus === 'stop' && songs.length === 0){
       this.props.updatePlayStatus('play');
     }
   }
@@ -111,7 +122,6 @@ class SearchResultRow extends Component {
   renderSongList(){
     const { vendor, type } = this.props;
     let data = this.sliceList(this.props.data[type][vendor].songList);
-    console.log(data);
     return data.map((item, index) => {
       return (
         <div style={{
@@ -244,8 +254,9 @@ const mapStateToProps = (state) => {
   return {
     data: state.searchResult,
     searchKey: state.searchKey.key,
+    playlist: state.playlist,
     playlistID: state.playStatus.playlistID,
-    playStatus: state.playStatus.status
+    playStatus: state.playStatus.status,
   };
 };
 const mapDispatchToProps = (dispatch) => {
