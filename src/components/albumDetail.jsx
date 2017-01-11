@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { getplaylist } from '../redux/action/fetch';
+import { getalbum } from '../redux/action/fetch';
 import { notification } from 'antd';
 import SongListRow from './songListRow';
 import SongListHeader from './songListHeader';
@@ -52,7 +52,7 @@ class AlbumDetail extends Component{
   }
   componentDidMount(){
     if(this.state.vendor && this.state.id){
-      getplaylist(this.state.vendor, this.state.id)
+      getalbum(this.state.vendor, this.state.id)
         .then(res => {
           if(res.success){
             console.log(res);
@@ -87,7 +87,7 @@ class AlbumDetail extends Component{
             index={index}
             name={item.name}
             artist={item.artists.map(i => i.name).join(' & ')}
-            album={item.album.name}
+            album={data.name}
             id={item.id}
             vendor={vendor}
             data={item}
@@ -101,7 +101,7 @@ class AlbumDetail extends Component{
             <img src={data.cover} alt={`${data.name}`} height={250} width={250} />
             <div style={styles.albumInfo}>
               <h1 style={styles.titleText}>{data.name}</h1>
-              <h2 style={styles.description}>{`创建人: ${data.author.name}`}</h2>
+              <h2 style={styles.description}>{`音乐人: ${data.artist.name}`}</h2>
               <h2 style={styles.description}>{`曲目数: ${data.songList.length}首`}</h2>
             </div>
           </div>

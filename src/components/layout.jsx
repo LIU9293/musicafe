@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Playlist from './playlist';
+import Playlist from './userPlaylist';
 import Search from './searchInput';
 import Player from './player';
 import { defaultTheme } from '../lib/color';
@@ -11,7 +11,7 @@ const styles = {
   }
 }
 
-class App extends Component {
+class Layout extends Component {
   render(){
     return(
       <div className="app">
@@ -34,4 +34,4 @@ class App extends Component {
   }
 }
 
-module.exports = App
+module.exports = Layout

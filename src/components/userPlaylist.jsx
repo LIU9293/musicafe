@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'antd';
-import PlaylistDetail from './playlistDetail';
+import PlaylistDetail from './userPlaylistDetail';
 const TabPane = Tabs.TabPane;
 
 class Playlist extends Component {

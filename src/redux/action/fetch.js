@@ -38,7 +38,7 @@ const getsong = (vendor, id) => {
 
 const getalbum = (vendor, id) => {
   return new Promise((resolve, reject) => {
-    fetch(`${base}get/song/${vendor}?id=${id}`)
+    fetch(`${base}get/album/${vendor}?id=${id}`)
       .then(res => res.json())
       .then(json => resolve(json))
       .catch(err => reject(err))
@@ -47,7 +47,7 @@ const getalbum = (vendor, id) => {
 
 const getplaylist = (vendor, id) => {
   return new Promise((resolve, reject) => {
-    fetch(`${base}get/song/${vendor}?id=${id}`)
+    fetch(`${base}get/playlist/${vendor}?id=${id}`)
       .then(res => res.json())
       .then(json => resolve(json))
       .catch(err => reject(err))
