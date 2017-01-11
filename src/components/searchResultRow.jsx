@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { Pagination, message, notification } from 'antd';
+import { Pagination, notification } from 'antd';
 import api from '../redux/action/fetch';
 import { browserHistory } from 'react-router';
 
@@ -195,8 +195,9 @@ class SearchResultRow extends Component {
       album: 'albumList',
       playlist: 'playlists',
     };
-    if(this.props.data[type][vendor][converName[type]].length < (page*12)){
-      api[`search${type}`](vendor, this.props.searchKey, 12, page)
+    if(this.props.data[type][vendor][converName[type]].length < (page*this.numOfSongs)){
+      let nextPage = this.props.data[type][vendor][converName[type]].length/12 + 1;
+      api[`search${type}`](vendor, this.props.searchKey, 12, nextPage)
         .then(res => {
           if(res.success){
             this.props.updateResult(vendor, type, {
@@ -205,10 +206,15 @@ class SearchResultRow extends Component {
             });
             this.setState({pageIndex: page});
           } else {
-            message.error(`错误：${res.message}`);
+            throw res.message;
           }
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          notification.error({
+            message: '出错啦',
+            description: err
+          });
+        });
     }
     this.setState({pageIndex: page});
   }
