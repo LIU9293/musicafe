@@ -1,7 +1,7 @@
 'use strict';
 const express = require('express');
 const path = require('path');
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 8080;
 const app = express();
 const router = require('./api');
 const compression = require('compression');
