@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Howl } from 'howler';
 import { connect } from 'react-redux';
-import { getSong } from '../redux/action/fetch';
+import { getsong } from '../redux/action/fetch';
 import { Icon, notification, Slider } from 'antd';
 import Shuffle from 'react-icons/io/ios-shuffle-strong';
 
@@ -53,9 +53,15 @@ class Player extends Component{
     this.renderSong = this.renderSong.bind(this);
     this.next = this.next.bind(this);
     this.pause = this.pause.bind(this);
-    this.getSongPosition = this.getSongPosition.bind(this);
+    this.getsongPosition = this.getsongPosition.bind(this);
     this.changeSongPosition = this.changeSongPosition.bind(this);
     this.changeSwitchType = this.changeSwitchType.bind(this);
+  }
+
+  componentWillMount(){
+    if(localStorage.getItem('switchType') === 'random'){
+      this.props.changeSwitchType('random');
+    }
   }
 
   componentWillReceiveProps(nextProps, nextState){
@@ -95,7 +101,7 @@ class Player extends Component{
     if(this.t){
       clearInterval(this.t);
     }
-    getSong(vendor, id)
+    getsong(vendor, id)
       .then(res => {
         if(res.success){
           this.setState({url: res.url}, () => {
@@ -112,7 +118,7 @@ class Player extends Component{
               this.setState({
                 songLength: length
               });
-              this.t = setInterval(this.getSongPosition, 1000);
+              this.t = setInterval(this.getsongPosition, 1000);
             });
           });
         } else {
@@ -147,9 +153,9 @@ class Player extends Component{
   }
 
   changeSwitchType(){
-    this.props.changeSwitchType(
-      this.props.switchType === 'list' ? 'random' : 'list'
-    )
+    const type = this.props.switchType === 'list' ? 'random' : 'list';
+    this.props.changeSwitchType(type);
+    localStorage.setItem('switchType', type);
   }
 
   pause(){
@@ -209,10 +215,10 @@ class Player extends Component{
     if(this.player){
       this.player.seek(sec);
     }
-    this.t = setInterval(this.getSongPosition, 1000);
+    this.t = setInterval(this.getsongPosition, 1000);
   }
 
-  getSongPosition(){
+  getsongPosition(){
     this.setState({
       songPosition: this.player.seek()
     });

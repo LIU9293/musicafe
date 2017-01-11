@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import { Pagination, message } from 'antd';
-import { searchSong } from '../redux/action/fetch';
+import { searchsong } from '../redux/action/fetch';
 
 const name = {
   qq: 'QQ音乐',
@@ -11,14 +11,13 @@ const name = {
 
 const styles = {
   cell: {
-    display: 'inline-block',
-    marginTop: '10px',
+    display: 'flex',
+    margin: '10px',
     height: '140px',
     width: '140px',
     backgroundPosition: 'center center',
     backgroundSize: 'cover',
     textAlign: 'center',
-    overflow: 'hidden',
   },
   caption: {
     fontSize: '22px',
@@ -41,6 +40,21 @@ const styles = {
     color: '#bbb',
     fontSize: '12px',
   },
+  titleArea: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginRight: '20px',
+  },
+  listContainer: {
+    margin: '0px 10px 0px 10px',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
 }
 
 class SearchResultRow extends Component {
@@ -51,9 +65,12 @@ class SearchResultRow extends Component {
       pageIndex: 1
     };
     this.renderSongList = this.renderSongList.bind(this);
+    this.renderAlbum = this.renderAlbum.bind(this);
+    this.renderPlaylist = this.renderPlaylist.bind(this);
     this.onPageChange = this.onPageChange.bind(this);
     let width = document.getElementsByTagName('body')[0].offsetWidth;
     this.numOfSongs = width > 1327 ? 12 : 10;
+    this.sliceList = this.sliceList.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -71,15 +88,19 @@ class SearchResultRow extends Component {
     }
   }
 
+  sliceList(array){
+    return array.slice((this.state.pageIndex - 1)*this.numOfSongs, this.state.pageIndex*this.numOfSongs);
+  }
+
   renderSongList(){
     const { vendor, type } = this.props;
-    let data = this.props.data[type][vendor].songList.slice((this.state.pageIndex - 1)*this.numOfSongs, this.state.pageIndex*this.numOfSongs);
+    let data = this.sliceList(this.props.data[type][vendor].songList);
+    console.log(data);
     return data.map((item, index) => {
       return (
         <div style={{
             ...styles.cell,
-            backgroundImage: `url(${item.album.cover})`,
-            marginLeft: '20px',
+            backgroundImage: `url(${item.album.cover})`
           }}
           key={index}
         >
@@ -97,10 +118,50 @@ class SearchResultRow extends Component {
     });
   }
 
+  renderAlbum(){
+    const { vendor, type } = this.props;
+    let data = this.sliceList(this.props.data[type][vendor].albumList);
+    return data.map((album, index) => {
+      return (
+        <div style={{
+            ...styles.cell,
+            backgroundImage: `url(${album.cover})`
+          }}
+          key={index}
+        >
+          <div style={styles.blur}>
+            <div style={styles.name}>{album.name}</div>
+            <div style={styles.artist}>{album.artist.name}</div>
+          </div>
+        </div>
+      )
+    })
+  }
+
+  renderPlaylist(){
+    const { vendor, type } = this.props;
+    let data = this.sliceList(this.props.data[type][vendor].playlists);
+    return data.map((playlist, index) => {
+      return (
+        <div style={{
+            ...styles.cell,
+            backgroundImage: `url(${playlist.cover})`
+          }}
+          key={index}
+        >
+          <div style={styles.blur}>
+            <div style={styles.name}>{playlist.name}</div>
+            <div style={styles.artist}>{playlist.author.name}</div>
+          </div>
+        </div>
+      )
+    })
+  }
+
   onPageChange(page){
     const { vendor, type } = this.props;
     if(this.props.data[type][vendor].songList.length < (page*12)){
-      searchSong(vendor, this.props.searchKey, 12, page)
+      searchsong(vendor, this.props.searchKey, 12, page)
         .then(res => {
           if(res.success){
             this.props.updateResult(vendor, type, {
@@ -123,17 +184,29 @@ class SearchResultRow extends Component {
     if(type === 'song'){
       lists = this.renderSongList();
     }
+    if(type === 'album'){
+      lists = this.renderAlbum();
+    }
+    if(type === 'playlist'){
+      lists = this.renderPlaylist();
+    }
     return (
       <div>
-        <h1 className="title-primary" style={{marginLeft: '20px'}}>{name[this.props.vendor]}</h1>
-        <Pagination
-          simple
-          defaultCurrent={1}
-          total={this.props.data[type][vendor].total}
-          onChange={(page) => {this.onPageChange(page)}}
-          current={this.state.pageIndex}
-        />
-        {lists}
+        <div style={styles.titleArea}>
+          <h1 className="title-primary" style={{marginLeft: '20px'}}>
+            {name[this.props.vendor]}
+          </h1>
+          <Pagination
+            simple
+            defaultCurrent={1}
+            total={this.props.data[type][vendor].total}
+            onChange={(page) => {this.onPageChange(page)}}
+            current={this.state.pageIndex}
+          />
+        </div>
+        <div style={styles.listContainer}>
+          {lists}
+        </div>
       </div>
     );
   }

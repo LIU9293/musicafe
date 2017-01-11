@@ -64,6 +64,7 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
+    "https": "HTTPS=true npm start",
     "test": "node scripts/test.js --env=jsdom",
     "github": "npm run build&&gh-pages -d build"
   },

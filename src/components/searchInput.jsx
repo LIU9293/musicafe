@@ -24,7 +24,7 @@ const styles = {
     border: 'none',
     WebkitAppearance: 'none',
     outline: 'none',
-    fontSize: '16px',
+    fontSize: '14px',
     textAlign: 'center',
     borderBottom: `solid 1px LightGrey`,
   },
@@ -64,11 +64,11 @@ class Search extends Component {
     if(this.state.value){
       this.props.updateKey(this.state.value);
       this.props.clearResult(this.props.searchType);
-      this.state.searchVendor.map(i => {
-        api[`search${this.props.searchType}`](i, this.state.value, 12, 1)
+      this.state.searchVendor.map(vendor => {
+        api[`search${this.props.searchType}`](vendor, this.state.value, 12, 1)
           .then(res => {
               if(res.success){
-                this.props.updateResult(i, this.props.searchType, res);
+                this.props.updateResult(vendor, this.props.searchType, res);
               } else {
                 notification.open({
                   message: '出错啦',

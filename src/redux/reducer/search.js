@@ -50,12 +50,18 @@ export const searchResult = (state = searchResultInitState, action) => {
     case 'SEARCH_RESULT_UPDATE_ALBUM':
       return {
         ...state,
-        album: action.data
+        album: {
+          ...state.album,
+          [action.vendor]: action.data
+        }
       };
     case 'SEARCH_RESULT_UPDATE_PLAYLIST':
       return {
         ...state,
-        playlist: action.data
+        playlist: {
+          ...state.playlist,
+          [action.vendor]: action.data
+        }
       };
     case 'SEARCH_RESULT_CLEAR':
       return {
