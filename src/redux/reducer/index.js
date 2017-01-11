@@ -76,9 +76,24 @@ const playStatus = (state = {index: 0, playlistID: 0, status: 'stop', switchType
   }
 }
 
+const dataTrans = (state = {cover: '', title: '', id: null, author: ''}, action) => {
+  switch (action.type) {
+    case 'DATA_TRANS':
+      return {
+        title: action.title,
+        cover: action.cover,
+        id: action.id,
+        author: action.author,
+      }
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   playlist,
   playStatus,
   searchKey,
   searchResult,
+  dataTrans,
 })

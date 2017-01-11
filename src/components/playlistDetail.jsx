@@ -1,12 +1,21 @@
 import React, { Component }  from 'react';
 import { getplaylist } from '../redux/action/fetch';
-import { notification } from 'antd';
+import { notification, Icon } from 'antd';
 import SongListRow from './songListRow';
 import SongListHeader from './songListHeader';
+import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 const styles = {
-  title: {
-    
+  top: {
+    display: 'flex',
+    width: '50px',
+    height: '50px',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    cursor: 'pointer',
+    fontSize: '26px',
+    marginBottom: '20px',
   },
   headArea: {
     display: 'flex',
@@ -34,12 +43,6 @@ const styles = {
   }
 };
 
-const vendorConvert = {
-  xiami: '虾米',
-  qq: 'QQ音乐',
-  netease: '网易云音乐',
-};
-
 class AlbumDetail extends Component{
   constructor(props){
     super(props);
@@ -51,6 +54,7 @@ class AlbumDetail extends Component{
     };
   }
   componentDidMount(){
+    console.log(browserHistory);
     if(this.state.vendor && this.state.id){
       getplaylist(this.state.vendor, this.state.id)
         .then(res => {
@@ -94,14 +98,26 @@ class AlbumDetail extends Component{
           />
         );
       });
+      let title, cover, author;
+      if(this.props.dataTrans.id.toString() === this.state.id){
+        title = this.props.dataTrans.title;
+        cover = this.props.dataTrans.cover;
+        author = this.props.dataTrans.author;
+      } else {
+        title = data.name;
+        cover = data.cover;
+        author = data.author.name;
+      }
       return(
         <div style={{margin: '40px 20px 20px 20px'}}>
-          <div style={styles.title}></div>
+          <div style={styles.top} onClick={e => browserHistory.goBack()}>
+            <Icon type="arrow-left" />
+          </div>
           <div style={styles.headArea}>
-            <img src={data.cover} alt={`${data.name}`} height={250} width={250} />
+            <img src={cover} alt={`${title}`} height={250} width={250} />
             <div style={styles.albumInfo}>
-              <h1 style={styles.titleText}>{data.name}</h1>
-              <h2 style={styles.description}>{`创建人: ${data.author.name}`}</h2>
+              <h1 style={styles.titleText}>{title}</h1>
+              <h2 style={styles.description}>{`创建人: ${author}`}</h2>
               <h2 style={styles.description}>{`曲目数: ${data.songList.length}首`}</h2>
             </div>
           </div>
@@ -118,4 +134,10 @@ class AlbumDetail extends Component{
   }
 }
 
-export default AlbumDetail;
+const mapStateToProps = (state) => {
+  return {
+    dataTrans: state.dataTrans
+  }
+}
+
+export default connect(mapStateToProps)(AlbumDetail);

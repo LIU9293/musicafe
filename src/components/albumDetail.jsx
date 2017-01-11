@@ -1,12 +1,20 @@
 import React, { Component }  from 'react';
 import { getalbum } from '../redux/action/fetch';
-import { notification } from 'antd';
+import { notification, Icon } from 'antd';
 import SongListRow from './songListRow';
 import SongListHeader from './songListHeader';
+import { browserHistory } from 'react-router';
 
 const styles = {
-  title: {
-    
+  top: {
+    display: 'flex',
+    width: '50px',
+    height: '50px',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    cursor: 'pointer',
+    fontSize: '26px',
+    marginBottom: '20px',
   },
   headArea: {
     display: 'flex',
@@ -32,12 +40,6 @@ const styles = {
   list: {
     margin: '30px 0',
   }
-};
-
-const vendorConvert = {
-  xiami: '虾米',
-  qq: 'QQ音乐',
-  netease: '网易云音乐',
 };
 
 class AlbumDetail extends Component{
@@ -96,7 +98,9 @@ class AlbumDetail extends Component{
       });
       return(
         <div style={{margin: '40px 20px 20px 20px'}}>
-          <div style={styles.title}></div>
+          <div style={styles.top} onClick={e => browserHistory.goBack()}>
+            <Icon type="arrow-left" />
+          </div>
           <div style={styles.headArea}>
             <img src={data.cover} alt={`${data.name}`} height={250} width={250} />
             <div style={styles.albumInfo}>

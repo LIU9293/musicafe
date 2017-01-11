@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import { Pagination, message } from 'antd';
-import { searchsong } from '../redux/action/fetch';
+import api from '../redux/action/fetch';
 import { browserHistory } from 'react-router';
 
 const name = {
@@ -19,6 +19,12 @@ const styles = {
     backgroundPosition: 'center center',
     backgroundSize: 'cover',
     textAlign: 'center',
+  },
+  hr: {
+    width: '80px',
+    margin: '0 0 20px 20px',
+    height: '1px',
+    background: 'rgba(50, 50, 50, 0.5)',
   },
   caption: {
     fontSize: '22px',
@@ -46,7 +52,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     marginRight: '20px',
   },
   listContainer: {
@@ -86,7 +92,8 @@ class SearchResultRow extends Component {
     browserHistory.push(`/album/${vendor}/${id}`);
   }
   
-  pushToPlaylistDetail(vendor, id){
+  pushToPlaylistDetail(vendor, id, title, cover, author){
+    this.props.transferData(cover, title, id, author);
     browserHistory.push(`/playlist/${vendor}/${id}`);
   }
 
@@ -160,7 +167,7 @@ class SearchResultRow extends Component {
             cursor: 'pointer',
           }}
           key={index}
-          onClick={e => this.pushToPlaylistDetail(vendor, playlist.id)}
+          onClick={e => this.pushToPlaylistDetail(vendor, playlist.id, playlist.name, playlist.cover, playlist.author.name)}
         >
           <div style={styles.blur}>
             <div style={styles.name}>{playlist.name}</div>
@@ -173,13 +180,18 @@ class SearchResultRow extends Component {
 
   onPageChange(page){
     const { vendor, type } = this.props;
-    if(this.props.data[type][vendor].songList.length < (page*12)){
-      searchsong(vendor, this.props.searchKey, 12, page)
+    const converName = {
+      song: 'songList',
+      album: 'albumList',
+      playlist: 'playlists',
+    };
+    if(this.props.data[type][vendor][converName[type]].length < (page*12)){
+      api[`search${type}`](vendor, this.props.searchKey, 12, page)
         .then(res => {
           if(res.success){
             this.props.updateResult(vendor, type, {
               ...this.props.data[type][vendor],
-              songList: this.props.data[type][vendor].songList.concat(res.songList)
+              [converName[type]]: this.props.data[type][vendor][converName[type]].concat(res[converName[type]])
             });
             this.setState({pageIndex: page});
           } else {
@@ -204,19 +216,22 @@ class SearchResultRow extends Component {
       lists = this.renderPlaylist();
     }
     return (
-      <div>
+      <div style={{marginBottom: '50px'}}>
         <div style={styles.titleArea}>
           <h1 className="title-primary" style={{marginLeft: '20px'}}>
             {name[this.props.vendor]}
           </h1>
-          <Pagination
-            simple
-            defaultCurrent={1}
-            total={this.props.data[type][vendor].total}
-            onChange={(page) => {this.onPageChange(page)}}
-            current={this.state.pageIndex}
-          />
+          <div style={{display: 'flex', marginBottom: '20px'}}>
+            <Pagination
+              simple
+              defaultCurrent={1}
+              total={this.props.data[type][vendor].total}
+              onChange={(page) => {this.onPageChange(page)}}
+              current={this.state.pageIndex}
+            />
+          </div>
         </div>
+        <div style={styles.hr} />
         <div style={styles.listContainer}>
           {lists}
         </div>
@@ -256,7 +271,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     updatePlayStatus: (status) => {
       dispatch({type: 'PLAY_STATUS_UPDATE_STATUS', status});
-    }
+    },
+    transferData: (cover, title, id, author) => {
+      dispatch({type: 'DATA_TRANS', cover, title, id, author});
+    },
   };
 };
 
