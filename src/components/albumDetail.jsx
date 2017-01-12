@@ -89,6 +89,7 @@ class AlbumDetail extends Component{
             index={index}
             name={item.name}
             needPay={item.needPay}
+            offline={item.offlineNow || false}
             artist={item.artists.map(i => i.name).join(' & ')}
             album={data.name}
             id={item.id}

@@ -91,6 +91,7 @@ class AlbumDetail extends Component{
             index={index}
             needPay={item.needPay}
             name={item.name}
+            offline={item.offlineNow || false}
             artist={item.artists.map(i => i.name).join(' & ')}
             album={item.album.name}
             id={item.id}
@@ -100,7 +101,7 @@ class AlbumDetail extends Component{
         );
       });
       let title, cover, author;
-      if(this.props.dataTrans.id.toString() === this.state.id){
+      if(this.props.dataTrans.id && this.props.dataTrans.id.toString() === this.state.id){
         title = this.props.dataTrans.title;
         cover = this.props.dataTrans.cover;
         author = this.props.dataTrans.author;

@@ -51,7 +51,25 @@ class SongListRow extends Component{
       bgColor: this.props.index%2 === 0 ? '#fff' : '#fbfbfd'
     };
     this.addSong = this.addSong.bind(this);
+    this.checkAddSong = this.checkAddSong.bind(this);
   }
+  
+  checkAddSong(vendor, data, needPay){
+    if(needPay && vendor==='netease'){
+      notification.warning({
+        message: '音乐咖还不支持网易付费歌曲哦~',
+        description: '尝试其他搜索源试试？'
+      });
+      return;
+    } else if (needPay){
+      notification.warning({
+        message: '您尝试添加了一首付费歌曲~',
+        description: '音乐咖会尝试帮您加载!'
+      });
+    }
+    this.addSong(vendor, data);
+  }
+  
   addSong(vendor, data){
     const { playlist } = this.props;
     const songs = playlist['0'].songs;
@@ -67,7 +85,7 @@ class SongListRow extends Component{
     if(!data.artists && data.artist){
       data.artists = [...data.artist];
     }
-    this.props.addSong({...data, vendor})
+    this.props.addSong({...data, vendor});
   }
   render(){
     return(
@@ -79,6 +97,11 @@ class SongListRow extends Component{
             ? <div style={styles.payBadge}>{`${name[this.props.vendor]}付费`}</div>
             : null
           }
+          {
+            this.props.offline 
+            ? <div style={styles.payBadge}>{`${name[this.props.vendor]}已下线`}</div>
+            : null
+          }
         </div>
         <div style={styles.album}>
           {this.props.album || ''}
@@ -86,9 +109,13 @@ class SongListRow extends Component{
         <div style={styles.artist}>
           {this.props.artist || ''}
         </div>
-        <div style={styles.action} onClick={e => this.addSong(this.props.vendor, this.props.data)}>
-          <Icon type="plus" />
-        </div>
+        {
+          this.props.offline
+          ? <div style={{...styles.action, cursor: 'default'}} />
+          : <div style={styles.action} onClick={e => this.checkAddSong(this.props.vendor, this.props.data, this.props.needPay)}>
+              <Icon type="plus" />
+            </div>
+        }
       </div>
     )
   }
