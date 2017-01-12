@@ -88,6 +88,7 @@ class AlbumDetail extends Component{
             key={index}
             index={index}
             name={item.name}
+            needPay={item.needPay}
             artist={item.artists.map(i => i.name).join(' & ')}
             album={data.name}
             id={item.id}

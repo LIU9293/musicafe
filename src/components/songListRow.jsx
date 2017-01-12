@@ -28,6 +28,20 @@ const styles = {
     cursor: 'pointer',
     flex: 3,
   },
+  payBadge: {
+    display: 'inline',
+    backgroundColor: 'LightCoral',
+    color: '#fff',
+    borderRadius: '3px',
+    padding: '2px 6px',
+    fontSize: '12px',
+    marginLeft: '10px'
+  }
+}
+const name = {
+  qq: 'QQ音乐',
+  netease: '网易云音乐',
+  xiami: '虾米音乐'
 }
 
 class SongListRow extends Component{
@@ -60,6 +74,11 @@ class SongListRow extends Component{
       <div style={{...styles.row, backgroundColor: this.state.bgColor}}>
         <div style={styles.name}>
           {`${this.props.index + 1}.  ${this.props.name || ''}`}
+          {
+            this.props.needPay && this.props.needPay !== false
+            ? <div style={styles.payBadge}>{`${name[this.props.vendor]}付费`}</div>
+            : null
+          }
         </div>
         <div style={styles.album}>
           {this.props.album || ''}

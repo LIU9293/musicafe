@@ -53,7 +53,7 @@
     "compression": "^1.6.2",
     "express": "^4.14.0",
     "howler": "^2.0.2",
-    "music-api": "^0.2.0",
+    "music-api": "^0.2.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-icons": "^2.2.3",

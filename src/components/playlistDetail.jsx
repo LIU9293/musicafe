@@ -89,6 +89,7 @@ class AlbumDetail extends Component{
           <SongListRow
             key={index}
             index={index}
+            needPay={item.needPay}
             name={item.name}
             artist={item.artists.map(i => i.name).join(' & ')}
             album={item.album.name}
