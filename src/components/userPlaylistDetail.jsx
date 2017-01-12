@@ -5,12 +5,12 @@ import {Icon} from 'antd';
 const styles = {
   row: {
     height: '40px',
-    width: '100%',
+    width: '290px',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '0 15px',
+    margin: '0 15px',
     color: 'white',
   },
   button: {
@@ -21,6 +21,7 @@ const styles = {
     alignItems: 'center',
     cursor: 'pointer',
     color: 'white',
+    marginRight: '-10px',
   },
   right: {
     display: 'flex',
@@ -69,26 +70,26 @@ class PlaylistDetail extends React.Component {
 
   changeSong(listId, songIndex){
     this.props.changeSong(listId, songIndex);
+    if(this.props.playStatus !== 'play'){
+      this.props.changePlayStatus('play');
+    }
   }
 
   render () {
-    const { data, id, playlist, playlistID, currentIndex, playStatus } = this.props;
-    let list;
-    list = data.map((item, index) => {
-      if(!playlist[playlistID].songs[currentIndex]){
-        return null
-      }
-      let songID = playlist[playlistID].songs[currentIndex].id, playing;
-      if(songID === item.id && playStatus === 'play'){
+    const { data, id, currentIndex, playStatus } = this.props;
+    let list = [];
+    data.map((item, index) => {
+      let playing;
+      if(currentIndex === index && playStatus === 'play'){
         playing = <Icon style={{marginLeft: '5px', fontSize: '14px'}} type="smile-o" />;
-      } else if (songID === item.id){
+      } else if (currentIndex === index){
         playing = <Icon style={{marginLeft: '5px', fontSize: '14px'}} type="meh-o" />;
       } else {
         playing = null;
       }
-      return (
+      list.unshift(
         <div style={{...styles.row,
-            borderTop: index === 0 ? '0px' : '1px solid rgba(200, 200, 200, 0.5)'
+            borderTop: index === 0 ? '0px' : '1px solid rgba(200, 200, 200, 0.15)'
           }}
           key={index}
         >
@@ -106,7 +107,8 @@ class PlaylistDetail extends React.Component {
           </div>
         </div>
       )
-    })
+      return null;
+    });
     return(
       <div style={styles.container}>
         {list}
@@ -133,6 +135,9 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({type: 'PLAY_STATUS_UPDATE_INDEX', index: songIndex});
       dispatch({type: 'PLAY_STATUS_UPDATE_PLAYLIST_ID', playlistID});
     },
+    changePlayStatus: (status) => {
+      dispatch({type: 'PLAY_STATUS_UPDATE_STATUS', status});
+    }
   }
 }
 

@@ -13,6 +13,9 @@ const styles = {
     display: 'flex',
     flex: 12,
     paddingLeft: '15px',
+    paddingRight: '10px',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   album: {
     display: 'flex',
@@ -35,13 +38,14 @@ const styles = {
     borderRadius: '3px',
     padding: '2px 6px',
     fontSize: '12px',
-    marginLeft: '10px'
+    marginLeft: '10px',
+    minWidth: '60px',
   }
 }
 const name = {
-  qq: 'QQ音乐',
-  netease: '网易云音乐',
-  xiami: '虾米音乐'
+  qq: 'QQ',
+  netease: '网易',
+  xiami: '虾米'
 }
 
 class SongListRow extends Component{
@@ -53,8 +57,19 @@ class SongListRow extends Component{
     this.addSong = this.addSong.bind(this);
     this.checkAddSong = this.checkAddSong.bind(this);
   }
-  
+
   checkAddSong(vendor, data, needPay){
+    const { playlist } = this.props;
+    const songs = playlist['0'].songs;
+    for(let i = 0; i < songs.length; i++){
+      if(songs[i].vendor === vendor && songs[i].id === data.id){
+        notification.warning({
+          message: '出错啦~',
+          description: '歌单里面已经有这首歌了哦!'
+        });
+        return;
+      }
+    }
     if(needPay && vendor==='netease'){
       notification.warning({
         message: '音乐咖还不支持网易付费歌曲哦~',
@@ -69,24 +84,20 @@ class SongListRow extends Component{
     }
     this.addSong(vendor, data);
   }
-  
+
   addSong(vendor, data){
-    const { playlist } = this.props;
-    const songs = playlist['0'].songs;
-    for(let i = 0; i < songs.length; i++){
-      if(songs[i].vendor === vendor && songs[i].id === data.id){
-        notification.warning({
-          message: '出错啦~',
-          description: '歌单里面已经有这首歌了哦!'
-        });
-        return;
-      }
-    }
     if(!data.artists && data.artist){
       data.artists = [...data.artist];
     }
+    if(!data.album){
+      data.album = {
+        id: this.props.albumID,
+        name: this.props.album,
+      }
+    }
     this.props.addSong({...data, vendor});
   }
+
   render(){
     return(
       <div style={{...styles.row, backgroundColor: this.state.bgColor}}>
@@ -98,7 +109,7 @@ class SongListRow extends Component{
             : null
           }
           {
-            this.props.offline 
+            this.props.offline
             ? <div style={styles.payBadge}>{`${name[this.props.vendor]}已下线`}</div>
             : null
           }

@@ -22,6 +22,8 @@ body *{
   top: 0;
   bottom: 0;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .rightPanel{
@@ -32,6 +34,7 @@ body *{
 .content{
   max-width: 1000px;
   margin: 20px auto;
+  min-width: 660px;
 }
 
 .search{
@@ -50,8 +53,8 @@ body *{
 }
 
 .addSongButton{
-  height: 140px;
-  width: 140px;
+  height: 150px;
+  width: 150px;
   position: absolute;
   top: 0; left: 0;
   background-color: transparent;
@@ -77,9 +80,8 @@ body *{
   transition: 'all 0.2s';
 }
 .audio-player{
-  position: absolute;
+  height: 102px;
   width: 320px;
-  bottom: 0;
 }
 .ant-slider{
   background-color: transparent;
@@ -112,4 +114,14 @@ body *{
 .ant-select-focused .ant-select-selection .ant-select-selection:focus{
   border: none;
   box-shadow: none;
+}
+.ant-tabs{
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}
+.ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane{
+  display: flex;
+  flex: 1;
+  overflow-y: scroll;
 }

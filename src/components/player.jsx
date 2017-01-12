@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Howl } from 'howler';
 import { connect } from 'react-redux';
-import { getsong } from '../redux/action/fetch';
+import { getsong, getalbum } from '../redux/action/fetch';
 import { Icon, notification, Slider } from 'antd';
 import Shuffle from 'react-icons/io/ios-shuffle-strong';
 
@@ -39,6 +39,7 @@ const styles = {
 }
 
 class Player extends Component{
+
   constructor(props){
     super(props);
     this.state = {
@@ -56,6 +57,7 @@ class Player extends Component{
     this.getsongPosition = this.getsongPosition.bind(this);
     this.changeSongPosition = this.changeSongPosition.bind(this);
     this.changeSwitchType = this.changeSwitchType.bind(this);
+    this.fetchSongURL = this.fetchSongURL.bind(this);
   }
 
   componentWillMount(){
@@ -75,7 +77,7 @@ class Player extends Component{
      */
     if(songs[nextProps.songIndex].id !== this.state.songID && nextProps.playStatus === 'play'){
       this.setState({songID: songs[nextProps.songIndex].id}, () => {
-          this.renderSong(songs[nextProps.songIndex].vendor, songs[nextProps.songIndex].id);
+          this.renderSong(songs[nextProps.songIndex].vendor, songs[nextProps.songIndex].id, songs[nextProps.songIndex].album.id);
       });
     }
   }
@@ -84,12 +86,48 @@ class Player extends Component{
     if(this.props.playStatus === 'play'){
       let songs = this.props.playlist[this.props.playlistID].songs;
       if(songs && songs.length > 0){
-        this.renderSong(songs[this.props.songIndex].vendor, songs[this.props.songIndex].id);
+        this.renderSong(songs[this.props.songIndex].vendor, songs[this.props.songIndex].id, songs[this.props.songIndex].album.id);
       }
     }
   }
 
-  renderSong(vendor, id){
+  fetchSongURL(vendor, id, albumid){
+    return new Promise((resolve, reject) => {
+      if(vendor === 'xiami'){
+        console.log(vendor, id);
+        getalbum(vendor, albumid)
+          .then(res => {
+            if(res.success){
+              let list = res.songList;
+              for(let i = 0; i < list.length; i++){
+                if(list[i].id === id){
+                  resolve(list[i].file);
+                }
+              }
+              reject('代码出了点问题哦😢');
+            } else {
+              reject(res.message);
+            }
+          })
+          .catch(err => reject(err));
+      } else {
+        getsong(vendor, id)
+          .then(res => {
+            if(res.success){
+              resolve(res.url);
+            } else {
+              reject(res.message);
+            }
+          })
+          .catch(err => reject(err));
+      }
+    });
+  }
+
+  renderSong(vendor, id, albumid){
+    /**
+     *  first delete the player instance in exist
+     */
     if(this.player){
       this.setState({
         songLength: '--',
@@ -98,39 +136,38 @@ class Player extends Component{
       this.player.unload();
       this.player = null;
     }
+
     if(this.t){
       clearInterval(this.t);
     }
-    getsong(vendor, id)
-      .then(res => {
-        if(res.success){
-          this.setState({url: res.url}, () => {
-            this.player = new Howl({
-              src: [res.url],
-              html5: true,
-              onend: this.next,
-            });
-            if(this.props.playStatus === "play"){
-              this.player.play();
-            }
-            this.player.once('play', () => {
-              let length = this.player.duration();
-              this.setState({
-                songLength: length
-              });
-              this.t = setInterval(this.getsongPosition, 1000);
-            });
+
+    this.fetchSongURL(vendor, id, albumid)
+      .then(url => {
+        this.setState({url}, () => {
+          this.player = new Howl({
+            src: url,
+            html5: true,
+            onend: this.next,
           });
-        } else {
-          throw new Error(res.message);
-        }
+          if(this.props.playStatus === "play"){
+            this.player.play();
+          }
+          this.player.once('play', () => {
+            let length = this.player.duration();
+            this.setState({
+              songLength: length
+            });
+            this.t = setInterval(this.getsongPosition, 1000);
+          });
+        });
       })
       .catch(err => {
         notification.open({
           message: '出错啦',
-          description: err.toString(),
+          description: err,
         });
-      })
+        this.next();
+      });
   }
 
   next(){
@@ -143,6 +180,10 @@ class Player extends Component{
       };
     }
     if(this.props.switchType === 'random'){
+      if(list.length === 1){
+        this.props.updateSongIndex(0);
+        return
+      }
       let indexs = list.map((item, index) => {return index}).filter(i => i !== this.props.songIndex);
       let nextIndex = indexs[Math.floor(Math.random()*indexs.length)];
       this.props.updateSongIndex(nextIndex);

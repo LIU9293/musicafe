@@ -9,13 +9,18 @@ const name = {
   netease: '网易云音乐',
   xiami: '虾米音乐'
 }
+const badgeName = {
+  qq: 'QQ',
+  netease: '网易',
+  xiami: '虾米'
+}
 
 const styles = {
   cell: {
     display: 'flex',
-    margin: '10px',
-    height: '140px',
-    width: '140px',
+    margin: '10px 5px',
+    height: '150px',
+    width: '150px',
     backgroundPosition: 'center center',
     backgroundSize: 'cover',
     textAlign: 'center',
@@ -32,7 +37,7 @@ const styles = {
   blur: {
     position: 'absolute',
     bottom: 0,
-    width: '140px',
+    width: '150px',
     left: 0,
     height: '50px',
     backgroundColor: 'rgba(50, 50, 50, 0.7)',
@@ -62,6 +67,16 @@ const styles = {
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
+  payBadge: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: 'LightCoral',
+    color: '#fff',
+    padding: '2px 6px',
+    fontSize: '12px',
+    minWidth: '60px',
+  },
 }
 
 class SearchResultRow extends Component {
@@ -78,6 +93,7 @@ class SearchResultRow extends Component {
     let width = document.getElementsByTagName('body')[0].offsetWidth;
     this.numOfSongs = width > 1327 ? 12 : 10;
     this.sliceList = this.sliceList.bind(this);
+    this.checkAddSong = this.checkAddSong.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -97,7 +113,7 @@ class SearchResultRow extends Component {
     browserHistory.push(`/playlist/${vendor}/${id}`);
   }
 
-  addSong(vendor, data){
+  checkAddSong(vendor, data, needPay){
     const { playlist } = this.props;
     const songs = playlist['0'].songs;
     for(let i = 0; i < songs.length; i++){
@@ -109,10 +125,23 @@ class SearchResultRow extends Component {
         return;
       }
     }
-    this.props.addSong({...data, vendor});
-    if(this.props.playlistID === 0 && this.props.playStatus === 'stop' && songs.length === 0){
-      this.props.updatePlayStatus('play');
+    if(needPay && vendor==='netease'){
+      notification.warning({
+        message: '音乐咖还不支持网易付费歌曲哦~',
+        description: '尝试其他搜索源试试？'
+      });
+      return;
+    } else if (needPay){
+      notification.warning({
+        message: '您尝试添加了一首付费歌曲~',
+        description: '音乐咖会尝试帮您加载!'
+      });
     }
+    this.addSong(vendor, data);
+  }
+
+  addSong(vendor, data){
+    this.props.addSong({...data, vendor});
   }
 
   sliceList(array){
@@ -130,12 +159,17 @@ class SearchResultRow extends Component {
           }}
           key={index}
         >
+          {
+            item.needPay
+            ? <div style={styles.payBadge}>{`${badgeName[vendor]}付费`}</div>
+            : null
+          }
           <div style={styles.blur}>
             <div style={styles.name}>{item.name}</div>
             <div style={styles.artist}>{item.artists.map(i => i.name).join(' & ')}</div>
           </div>
           <div
-            onClick={() => {this.addSong(vendor, item)}}
+            onClick={() => {this.checkAddSong(vendor, item, item.needPay)}}
             style={styles.addSongButton}
             className="addSongButton"
           >+</div>

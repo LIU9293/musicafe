@@ -20,7 +20,10 @@ class Layout extends Component {
           style={styles.leftPanel}
         >
           <div className="logo"></div>
-          <Playlist />
+          <div style={{display: 'flex', flex: 1}}>
+            <Playlist />
+          </div>
+
           <Player />
         </div>
         <div className="rightPanel">
