@@ -93,8 +93,7 @@ class Player extends Component{
 
   fetchSongURL(vendor, id, albumid){
     return new Promise((resolve, reject) => {
-      if(vendor === 'xiami'){
-        console.log(vendor, id);
+      if(vendor === 'xiami' && albumid && albumid !== 0){
         getalbum(vendor, albumid)
           .then(res => {
             if(res.success){
