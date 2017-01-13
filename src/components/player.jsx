@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Howl } from 'howler';
 import { connect } from 'react-redux';
-import { getsong, getalbum } from '../redux/action/fetch';
+import { getSongURL } from '../redux/action/fetch';
 import { Icon, notification, Slider } from 'antd';
 import Shuffle from 'react-icons/io/ios-shuffle-strong';
 
@@ -57,7 +57,6 @@ class Player extends Component{
     this.getsongPosition = this.getsongPosition.bind(this);
     this.changeSongPosition = this.changeSongPosition.bind(this);
     this.changeSwitchType = this.changeSwitchType.bind(this);
-    this.fetchSongURL = this.fetchSongURL.bind(this);
   }
 
   componentWillMount(){
@@ -91,38 +90,6 @@ class Player extends Component{
     }
   }
 
-  fetchSongURL(vendor, id, albumid){
-    return new Promise((resolve, reject) => {
-      if(vendor === 'xiami' && albumid && albumid !== 0){
-        getalbum(vendor, albumid)
-          .then(res => {
-            if(res.success){
-              let list = res.songList;
-              for(let i = 0; i < list.length; i++){
-                if(list[i].id === id){
-                  resolve(list[i].file);
-                }
-              }
-              reject('代码出了点问题哦😢');
-            } else {
-              reject(res.message);
-            }
-          })
-          .catch(err => reject(err));
-      } else {
-        getsong(vendor, id)
-          .then(res => {
-            if(res.success){
-              resolve(res.url);
-            } else {
-              reject(res.message);
-            }
-          })
-          .catch(err => reject(err));
-      }
-    });
-  }
-
   renderSong(vendor, id, albumid){
     /**
      *  first delete the player instance in exist
@@ -140,7 +107,7 @@ class Player extends Component{
       clearInterval(this.t);
     }
 
-    this.fetchSongURL(vendor, id, albumid)
+    getSongURL(vendor, id, albumid)
       .then(url => {
         this.setState({url}, () => {
           this.player = new Howl({
@@ -192,7 +159,9 @@ class Player extends Component{
   changeSwitchType(){
     const type = this.props.switchType === 'list' ? 'random' : 'list';
     this.props.changeSwitchType(type);
-    localStorage.setItem('switchType', type);
+    if(localStorage){
+      localStorage.setItem('switchType', type);
+    }
   }
 
   pause(){

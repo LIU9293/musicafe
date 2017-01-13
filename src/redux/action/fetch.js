@@ -54,6 +54,42 @@ const getplaylist = (vendor, id) => {
   });
 }
 
+/**
+ * this one return a url of given songid, albumid, vendor,
+ * handle xiami need pay song logic.
+ */
+const getSongURL= (vendor, id, albumid) => {
+  return new Promise((resolve, reject) => {
+    if(vendor === 'xiami' && albumid && albumid !== 0){
+      getalbum(vendor, albumid)
+        .then(res => {
+          if(res.success){
+            let list = res.songList;
+            for(let i = 0; i < list.length; i++){
+              if(list[i].id === id){
+                resolve(list[i].file);
+              }
+            }
+            reject('代码出了点问题哦😢');
+          } else {
+            reject(res.message);
+          }
+        })
+        .catch(err => reject(err));
+    } else {
+      getsong(vendor, id)
+        .then(res => {
+          if(res.success){
+            resolve(res.url);
+          } else {
+            reject(res.message);
+          }
+        })
+        .catch(err => reject(err));
+    }
+  });
+}
+
 module.exports = {
   searchsong,
   searchalbum,
@@ -61,4 +97,5 @@ module.exports = {
   getsong,
   getalbum,
   getplaylist,
+  getSongURL,
 }

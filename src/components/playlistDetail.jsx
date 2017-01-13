@@ -94,6 +94,7 @@ class AlbumDetail extends Component{
             offline={item.offlineNow || false}
             artist={item.artists.map(i => i.name).join(' & ')}
             album={item.album.name}
+            albumCover={item.album.cover}
             albumID={item.album.id}
             id={item.id}
             vendor={vendor}

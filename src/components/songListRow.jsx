@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, notification } from 'antd';
 import { connect } from 'react-redux';
+import { getSongURL } from '../redux/action/fetch';
 
 const styles = {
   row: {
@@ -27,9 +28,14 @@ const styles = {
   },
   action: {
     display: 'flex',
-    justifyContent: 'center',
     cursor: 'pointer',
     flex: 3,
+  },
+  actionButton: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   payBadge: {
     display: 'inline',
@@ -56,6 +62,7 @@ class SongListRow extends Component{
     };
     this.addSong = this.addSong.bind(this);
     this.checkAddSong = this.checkAddSong.bind(this);
+    this.downloadSong = this.downloadSong.bind(this);
   }
 
   checkAddSong(vendor, data, needPay){
@@ -98,6 +105,37 @@ class SongListRow extends Component{
     this.props.addSong({...data, vendor});
   }
 
+  downloadSong(vendor, songID, albumID, songName, needPay){
+    if(needPay && vendor === 'netease'){
+      notification.warning({
+        message: '音乐咖还不支持网易付费歌曲哦~',
+        description: '尝试其他搜索源试试？'
+      });
+      return;
+    }
+    getSongURL(vendor, songID, albumID)
+      .then(url => {
+        console.log(url);
+        let downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = songName;
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+        setTimeout(() => {
+          downloadLink.click();
+          setTimeout(() => {
+            document.body.removeChild(downloadLink);
+          }, 100);
+        }, 100);
+      })
+      .catch(err => {
+        notification.warning({
+          message: '出错啦',
+          description: err,
+        });
+      });
+  }
+
   render(){
     return(
       <div style={{...styles.row, backgroundColor: this.state.bgColor}}>
@@ -123,8 +161,19 @@ class SongListRow extends Component{
         {
           this.props.offline
           ? <div style={{...styles.action, cursor: 'default'}} />
-          : <div style={styles.action} onClick={e => this.checkAddSong(this.props.vendor, this.props.data, this.props.needPay)}>
-              <Icon type="plus" />
+          : <div style={styles.action}>
+              <div 
+                style={styles.actionButton}
+                onClick={e => this.downloadSong(this.props.vendor, this.props.id, this.props.albumID, this.props.name, this.props.needPay)}
+              >
+                <Icon type="arrow-down" />
+              </div>
+              <div 
+                style={styles.actionButton}
+                onClick={e => this.checkAddSong(this.props.vendor, this.props.data, this.props.needPay)}
+              >
+                <Icon type="plus" />
+              </div>
             </div>
         }
       </div>
