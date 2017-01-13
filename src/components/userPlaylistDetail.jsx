@@ -89,7 +89,7 @@ class PlaylistDetail extends React.Component {
       }
       list.unshift(
         <div style={{...styles.row,
-            borderTop: index === 0 ? '0px' : '1px solid rgba(200, 200, 200, 0.15)'
+            borderTop: '1px solid rgba(200, 200, 200, 0.15)'
           }}
           key={index}
         >
@@ -97,7 +97,7 @@ class PlaylistDetail extends React.Component {
             style={styles.left}
             onClick={() => this.changeSong(id, index)}
           >
-            {`${index+1}. ${item.name} - ${item.artists.map(i => i.name).join('&')}`}
+            {`${data.length - index}. ${item.name} - ${item.artists.map(i => i.name).join('&')}`}
             {playing}
           </div>
           <div style={styles.right}>
