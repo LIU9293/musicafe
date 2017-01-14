@@ -63,6 +63,9 @@ class Player extends Component{
     if(localStorage.getItem('switchType') === 'random'){
       this.props.changeSwitchType('random');
     }
+    if(localStorage.getItem('songIndex')){
+      this.props.updateSongIndex(localStorage.getItem('songIndex'));
+    }
   }
 
   componentWillReceiveProps(nextProps, nextState){
@@ -76,7 +79,8 @@ class Player extends Component{
      */
     if(songs[nextProps.songIndex].id !== this.state.songID && nextProps.playStatus === 'play'){
       this.setState({songID: songs[nextProps.songIndex].id}, () => {
-          this.renderSong(songs[nextProps.songIndex].vendor, songs[nextProps.songIndex].id, songs[nextProps.songIndex].album.id);
+        localStorage.setItem('songIndex', nextProps.songIndex);
+        this.renderSong(songs[nextProps.songIndex].vendor, songs[nextProps.songIndex].id, songs[nextProps.songIndex].album.id);
       });
     }
   }

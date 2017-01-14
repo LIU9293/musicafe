@@ -40,9 +40,6 @@ const styles = {
 class PlaylistDetail extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      selectedIndex: 0,
-    };
     this.deleteSong = this.deleteSong.bind(this);
     this.changeSong = this.changeSong.bind(this);
   }
@@ -82,9 +79,9 @@ class PlaylistDetail extends React.Component {
     let list = [];
     data.map((item, index) => {
       let playing;
-      if(currentIndex === index && playStatus === 'play'){
+      if(currentIndex == index && playStatus === 'play'){
         playing = <img src={wave} style={{marginLeft: '10px', marginBottom: '2px'}} alt={'wave'} />;
-      } else if (currentIndex === index){
+      } else if (currentIndex == index){
         playing = <img src={nowave} style={{marginLeft: '10px', marginBottom: '2px'}} alt={'nowave'} />;
       } else {
         playing = null;
