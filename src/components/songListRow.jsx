@@ -100,6 +100,7 @@ class SongListRow extends Component{
       data.album = {
         id: this.props.albumID,
         name: this.props.album,
+        cover: this.props.albumCover
       }
     }
     this.props.addSong({...data, vendor});
@@ -162,13 +163,13 @@ class SongListRow extends Component{
           this.props.offline
           ? <div style={{...styles.action, cursor: 'default'}} />
           : <div style={styles.action}>
-              <div 
+              <div
                 style={styles.actionButton}
                 onClick={e => this.downloadSong(this.props.vendor, this.props.id, this.props.albumID, this.props.name, this.props.needPay)}
               >
                 <Icon type="arrow-down" />
               </div>
-              <div 
+              <div
                 style={styles.actionButton}
                 onClick={e => this.checkAddSong(this.props.vendor, this.props.data, this.props.needPay)}
               >

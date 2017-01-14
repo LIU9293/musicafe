@@ -1,6 +1,6 @@
 
 const defaultTheme = {
-  leftPanelBg: '#0F202E',
+  leftPanelBg: '#333',
   leftPanelText: '#fff',
   rightPanelBg: '#F5F8FA',
   rightPanelText: '#202B33',

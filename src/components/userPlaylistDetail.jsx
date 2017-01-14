@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import {Icon} from 'antd';
+import { Icon } from 'antd';
+var wave = require('../../public/wave.gif');
+var nowave = require('../../public/nowave.png');
 
 const styles = {
   row: {
@@ -81,9 +83,9 @@ class PlaylistDetail extends React.Component {
     data.map((item, index) => {
       let playing;
       if(currentIndex === index && playStatus === 'play'){
-        playing = <Icon style={{marginLeft: '5px', fontSize: '14px'}} type="smile-o" />;
+        playing = <img src={wave} style={{marginLeft: '10px', marginBottom: '2px'}} alt={'wave'} />;
       } else if (currentIndex === index){
-        playing = <Icon style={{marginLeft: '5px', fontSize: '14px'}} type="meh-o" />;
+        playing = <img src={nowave} style={{marginLeft: '10px', marginBottom: '2px'}} alt={'nowave'} />;
       } else {
         playing = null;
       }
