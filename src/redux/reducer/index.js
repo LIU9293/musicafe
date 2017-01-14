@@ -76,14 +76,27 @@ const playStatus = (state = {index: 0, playlistID: 0, status: 'stop', switchType
   }
 }
 
-const dataTrans = (state = {cover: '', title: '', id: null, author: ''}, action) => {
+const dataTransInitState = {
+  discover: null,
+  playlist: {}
+}
+
+const dataTrans = (state = dataTransInitState, action) => {
   switch (action.type) {
-    case 'DATA_TRANS':
+    case 'DATA_TRANS_PLAYLIST':
       return {
-        title: action.title,
-        cover: action.cover,
-        id: action.id,
-        author: action.author,
+        ...state,
+        playlist: {
+          title: action.title,
+          cover: action.cover,
+          id: action.id,
+          author: action.author,
+        }
+      }
+    case 'DATA_TRANS_DISCOVER':
+      return{
+        ...state,
+        discover: action.discoverData,
       }
     default:
       return state;

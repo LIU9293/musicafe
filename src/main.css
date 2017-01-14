@@ -34,7 +34,7 @@ body *{
 .content{
   max-width: 1000px;
   margin: 20px auto;
-  min-width: 660px;
+  min-width: 840px;
 }
 
 .search{
@@ -115,6 +115,11 @@ body *{
   border: none;
   box-shadow: none;
 }
+.ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active{
+  border: none;
+  box-shadow: none;
+}
+
 .ant-tabs{
   display: flex;
   flex-direction: column;
@@ -144,4 +149,29 @@ body *{
     background-color: #999;
     opacity: 0.4;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+.gradient{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 220px;
+  background: linear-gradient(to bottom, #fff, transparent, transparent);
+}
+.cover-gradient{
+  margin-top: 2px;
+  height: 60px;
+  width: 220px;
+  background-position: 0 0;
+  background-size: cover;
+  transform: rotateX(180deg);
+}
+.ellipsis{
+  overflow: hidden;
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  padding: 0 5px;
 }

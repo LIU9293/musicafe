@@ -89,6 +89,7 @@ class AlbumDetail extends Component{
           <SongListRow
             key={index}
             index={index}
+            type={'playlist'}
             needPay={item.needPay}
             name={item.name}
             offline={item.offlineNow || false}
@@ -140,7 +141,7 @@ class AlbumDetail extends Component{
 
 const mapStateToProps = (state) => {
   return {
-    dataTrans: state.dataTrans
+    dataTrans: state.dataTrans.playlist
   }
 }
 

@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import { Pagination, notification } from 'antd';
 import api from '../redux/action/fetch';
 import { browserHistory } from 'react-router';
-
 const name = {
   qq: 'QQ音乐',
   netease: '网易云音乐',
@@ -165,8 +164,8 @@ class SearchResultRow extends Component {
             : null
           }
           <div style={styles.blur}>
-            <div style={styles.name}>{item.name}</div>
-            <div style={styles.artist}>{item.artists.map(i => i.name).join(' & ')}</div>
+            <div className="ellipsis" style={styles.name}>{item.name}</div>
+            <div className="ellipsis" style={styles.artist}>{item.artists.map(i => i.name).join(' & ')}</div>
           </div>
           <div
             onClick={() => {this.checkAddSong(vendor, item, item.needPay)}}
@@ -192,8 +191,8 @@ class SearchResultRow extends Component {
           onClick={e => this.pushToAlbumDetail(vendor, album.id)}
         >
           <div style={styles.blur}>
-            <div style={styles.name}>{album.name}</div>
-            <div style={styles.artist}>{album.artist.name}</div>
+            <div className="ellipsis" style={styles.name}>{album.name}</div>
+            <div className="ellipsis" style={styles.artist}>{album.artist.name}</div>
           </div>
         </div>
       )
@@ -214,8 +213,8 @@ class SearchResultRow extends Component {
           onClick={e => this.pushToPlaylistDetail(vendor, playlist.id, playlist.name, playlist.cover, playlist.author.name)}
         >
           <div style={styles.blur}>
-            <div style={styles.name}>{playlist.name}</div>
-            <div style={styles.artist}>{playlist.author.name}</div>
+            <div className="ellipsis" style={styles.name}>{playlist.name}</div>
+            <div className="ellipsis" style={styles.artist}>{playlist.author.name}</div>
           </div>
         </div>
       )
@@ -299,6 +298,7 @@ const mapStateToProps = (state) => {
     playStatus: state.playStatus.status,
   };
 };
+
 const mapDispatchToProps = (dispatch) => {
   return {
     addSong: (song) => {dispatch({type: 'INSERT_ONE_SONG', playlistID: 0, song: song})},
@@ -324,10 +324,9 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({type: 'PLAY_STATUS_UPDATE_STATUS', status});
     },
     transferData: (cover, title, id, author) => {
-      dispatch({type: 'DATA_TRANS', cover, title, id, author});
+      dispatch({type: 'DATA_TRANS_PLAYLIST', cover, title, id, author});
     },
   };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultRow);

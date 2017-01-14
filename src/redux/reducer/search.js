@@ -18,7 +18,7 @@ const searchResultInitState = {
 
 const searchKeyInitState = {
   key: null,
-  type: 'song',
+  type: 'album',
 }
 
 export const searchKey = (state = searchKeyInitState, action) => {

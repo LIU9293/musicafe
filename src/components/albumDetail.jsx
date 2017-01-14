@@ -57,7 +57,6 @@ class AlbumDetail extends Component{
       getalbum(this.state.vendor, this.state.id)
         .then(res => {
           if(res.success){
-            console.log(res);
             this.setState({
               loaded: true,
               data: res
@@ -87,6 +86,7 @@ class AlbumDetail extends Component{
           <SongListRow
             key={index}
             index={index}
+            type={'album'}
             name={item.name}
             needPay={item.needPay}
             offline={item.offlineNow || false}

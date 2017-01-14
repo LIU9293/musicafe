@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Icon, notification } from 'antd';
 import { connect } from 'react-redux';
 import { getSongURL } from '../redux/action/fetch';
+import { browserHistory } from 'react-router';
 
 const styles = {
   row: {
@@ -63,6 +64,10 @@ class SongListRow extends Component{
     this.addSong = this.addSong.bind(this);
     this.checkAddSong = this.checkAddSong.bind(this);
     this.downloadSong = this.downloadSong.bind(this);
+  }
+
+  pushToAlbumDetail(vendor, id){
+    browserHistory.push(`/album/${vendor}/${id}`);
   }
 
   checkAddSong(vendor, data, needPay){
@@ -154,7 +159,16 @@ class SongListRow extends Component{
           }
         </div>
         <div style={styles.album}>
-          {this.props.album || ''}
+          {
+            this.props.type === 'playlist'
+            ? <div
+                onClick={e => this.pushToAlbumDetail(this.props.vendor, this.props.albumID)}
+                style={{cursor: 'pointer'}}
+              >
+                {this.props.album || ''}
+              </div>
+            : this.props.album || ''
+          }
         </div>
         <div style={styles.artist}>
           {this.props.artist || ''}

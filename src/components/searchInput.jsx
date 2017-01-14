@@ -136,13 +136,13 @@ class Search extends Component {
             value={this.state.value || ''}
             onChange={this.handleInputChange}
           />
-          <Select defaultValue="song" style={styles.select} onChange={this.onChangeSearchType}>
-            <Option value="song">歌曲</Option>
+        <Select defaultValue="album" style={styles.select} onChange={this.onChangeSearchType}>
             <Option value="album">专辑</Option>
+            <Option value="song">歌曲</Option>
             <Option value="playlist">歌单</Option>
           </Select>
         </form>
-        <div style={{width: '400px', display: 'flex', flexDirection: 'row'}}>
+        <div style={{alignItems: 'flex-end', display: 'flex', flexDirection: 'row'}}>
             <Checkbox
               default={true}
               onCheck={(e) => this.changeVendor('netease', e)}

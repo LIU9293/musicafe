@@ -41,7 +41,7 @@ class Checkbox extends Component{
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      width: '120px',
+      width: '100px',
       marginLeft: '10px',
     };
     return(
