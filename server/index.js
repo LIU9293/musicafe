@@ -7,10 +7,10 @@ const router = require('./api');
 const compression = require('compression');
 
 // CORS
-app.all('*', (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    next();
-});
+// app.all('*', (req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     next();
+// });
 
 //gzip
 app.use(compression());
