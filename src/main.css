@@ -251,3 +251,7 @@ body *{
     -webkit-transform: scale(1.0);
   }
 }
+
+.ant-select-dropdown{
+  z-index: 9999999;
+}
