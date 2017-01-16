@@ -43,7 +43,7 @@ const styles = {
     marginLeft: '-20px',
     top: '0',
     padding: '20px 30px 20px 30px',
-    zIndex: '99999',
+    zIndex: '90',
     transition: 'all 0.2s',
     backgroundColor: '#fff',
   },

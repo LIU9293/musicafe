@@ -6,11 +6,11 @@ const app = express();
 const router = require('./api');
 const compression = require('compression');
 
-// CORS
-// app.all('*', (req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     next();
-// });
+//CORS
+app.all('*', (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "https://localhost:3000/");
+    next();
+});
 
 //gzip
 app.use(compression());
