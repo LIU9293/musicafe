@@ -3,7 +3,9 @@
 >音乐咖是一个可以搜索 🔍 - 收听 🎵 网易云、虾米、QQ音乐的平台。
 你可以安静听歌，也不必再在几个平台之间换来换去
 
-<img src="/public/capture.jpg" align="middle" style="margin: '20px 40px'" />
+<div style="margin: 20px 40px; box-shadow: 0 0 5px #888">
+  <img src="/public/capture.jpg" align="middle" />
+</div>
 
 ### 经历
 起初因为公司的电脑不能上网易云音乐，就想写一个API放到一个能访问的服务器上抓点歌听一听，写着写着变成了把网易云、虾米和QQ音乐API转换成同一个格式的API。再接着就写了一个前端，现在已经可以搜歌听歌了，也可以下载，虽然可能还有不少Bug，但是自己每天听歌还是很方便的。
