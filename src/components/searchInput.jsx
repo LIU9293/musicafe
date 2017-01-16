@@ -2,18 +2,16 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import api from '../redux/action/fetch';
-import Checkbox from './checkbox';
 import { notification, Select  } from 'antd';
 const Option = Select.Option;
 
 const styles = {
   container: {
-    marginTop: '40px',
-    marginBottom: '20px',
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    width: '300px',
   },
   searchInput: {
     backgroundColor: 'transparent',
@@ -24,16 +22,15 @@ const styles = {
     border: 'none',
     WebkitAppearance: 'none',
     outline: 'none',
-    fontSize: '14px',
+    fontSize: '13px',
     textAlign: 'center',
-    borderBottom: `solid 1px LightGrey`,
   },
   select: {
     width: '80px',
     position: 'absolute',
     left: '0',
     border: 'none',
-    top: '8px',
+    top: '6px',
   }
 };
 
@@ -42,14 +39,12 @@ class Search extends Component {
     super(props);
     this.state = {
       value: null,
-      searchVendor: ['xiami', 'qq', 'netease'],
       xiamiDisabled: false,
       qqDisabled: false,
       neteaseDisabled: false,
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.changeVendor = this.changeVendor.bind(this);
     this.onChangeSearchType = this.onChangeSearchType.bind(this);
   }
 
@@ -64,7 +59,7 @@ class Search extends Component {
     if(this.state.value){
       this.props.updateKey(this.state.value);
       this.props.clearResult(this.props.searchType);
-      this.state.searchVendor.map(vendor => {
+      this.props.searchVendor.map(vendor => {
         api[`search${this.props.searchType}`](vendor, this.state.value, 12, 1)
           .then(res => {
               if(res.success){
@@ -93,34 +88,6 @@ class Search extends Component {
     }
   }
 
-  changeVendor(vendor, e){
-    if(e){
-      if(this.state.searchVendor.length === 1){
-        // if only one left and check one, undisable all
-        this.setState({
-          xiamiDisabled: false,
-          qqDisabled: false,
-          neteaseDisabled: false,
-        });
-      }
-      this.setState({
-        searchVendor: this.state.searchVendor.concat([vendor])
-      });
-    } else {
-      if(this.state.searchVendor.length === 2){
-        // if only two left and uncheck one, disable another
-        let another = [...this.state.searchVendor].filter(i => i !== vendor)[0];
-        console.log(another + 'Disabled');
-        this.setState({
-          [another + 'Disabled']: true
-        });
-      }
-      this.setState({
-        searchVendor: this.state.searchVendor.filter(i => i !== vendor)
-      });
-    }
-  }
-
   onChangeSearchType(e){
     this.props.updateSearchType(e);
   }
@@ -136,35 +103,12 @@ class Search extends Component {
             value={this.state.value || ''}
             onChange={this.handleInputChange}
           />
-        <Select defaultValue="album" style={styles.select} onChange={this.onChangeSearchType}>
+          <Select defaultValue="album" style={styles.select} onChange={this.onChangeSearchType}>
             <Option value="album">专辑</Option>
             <Option value="song">歌曲</Option>
             <Option value="playlist">歌单</Option>
           </Select>
         </form>
-        <div style={{alignItems: 'flex-end', display: 'flex', flexDirection: 'row'}}>
-            <Checkbox
-              default={true}
-              onCheck={(e) => this.changeVendor('netease', e)}
-              disabled={this.state.neteaseDisabled}
-            >
-              网易云
-            </Checkbox>
-            <Checkbox
-              default={true}
-              onCheck={(e) => this.changeVendor('xiami', e)}
-              disabled={this.state.xiamiDisabled}
-            >
-              虾米
-            </Checkbox>
-            <Checkbox
-              default={true}
-              onCheck={(e) => this.changeVendor('qq', e)}
-              disabled={this.state.qqDisabled}
-            >
-              QQ音乐
-            </Checkbox>
-        </div>
       </div>
     );
   }
@@ -172,7 +116,8 @@ class Search extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    searchType: state.searchKey.type
+    searchType: state.searchKey.type,
+    searchVendor: state.searchKey.vendor,
   };
 };
 

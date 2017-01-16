@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Loading from './loading';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Carousel, Pagination } from 'antd';
@@ -219,7 +220,7 @@ class Dicover extends Component {
       let carouselList = this.renderCarousel();
       let suggestionList = this.renderSuggestion();
       return (
-        <div style={{padding: '40px 20px 0 20px'}}>
+        <div style={{padding: '10px 20px 0 20px'}}>
           <Carousel
             autoplay={true}
             centerMode={true}
@@ -251,7 +252,7 @@ class Dicover extends Component {
         </div>
       );
     }
-    return <div />
+    return <Loading />
   }
 }
 

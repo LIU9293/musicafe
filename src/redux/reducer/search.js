@@ -19,6 +19,7 @@ const searchResultInitState = {
 const searchKeyInitState = {
   key: null,
   type: 'album',
+  vendor: ['xiami', 'qq', 'netease']
 }
 
 export const searchKey = (state = searchKeyInitState, action) => {
@@ -27,6 +28,8 @@ export const searchKey = (state = searchKeyInitState, action) => {
       return {...state, key: action.key}
     case 'SEARCH_KEY_UPDATE_TYPE':
       return {...state, type: action.searchType}
+    case 'SEARCH_KET_UPDATE_VENDOR':
+      return {...state, vendor: action.vendor}
     default:
       return state;
   }

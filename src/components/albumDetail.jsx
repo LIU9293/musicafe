@@ -4,6 +4,7 @@ import { notification, Icon } from 'antd';
 import SongListRow from './songListRow';
 import SongListHeader from './songListHeader';
 import { browserHistory } from 'react-router';
+import Loading from './loading';
 
 const styles = {
   top: {
@@ -101,7 +102,7 @@ class AlbumDetail extends Component{
         );
       });
       return(
-        <div style={{margin: '40px 20px 20px 20px'}}>
+        <div style={{margin: '0px 20px 0px 20px'}}>
           <div style={styles.top} onClick={e => browserHistory.goBack()}>
             <Icon type="arrow-left" />
           </div>
@@ -121,7 +122,7 @@ class AlbumDetail extends Component{
       )
     }
     return(
-      <div />
+      <Loading />
     );
   }
 }

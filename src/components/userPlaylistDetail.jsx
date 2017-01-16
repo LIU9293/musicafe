@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'antd';
 var wave = require('../../public/wave.gif');
 var nowave = require('../../public/nowave.png');
-
+/* eslint-disable */
 const styles = {
   row: {
     height: '40px',

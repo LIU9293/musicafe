@@ -35,13 +35,13 @@ class Checkbox extends Component{
       border: 'solid 1px',
       borderColor: this.state.checked ? this.props.checkedColor : this.props.uncheckedColor,
       color: this.state.checked ? this.props.checkedColor : this.props.uncheckedColor,
-      height: '30px',
+      height: '28px',
       cursor: 'pointer',
       textAlign: 'center',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      width: '100px',
+      width: '74px',
       marginLeft: '10px',
     };
     return(
