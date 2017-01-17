@@ -25,6 +25,17 @@ npm run https (not npm start!!!)
 Because the API server is using https, so http development environment may cause CORS issue. 
 **PLEASE DO delete the baidu analytic code in public/index.html as well !!!**
 
+**Use your own API server**
+```shell
+src/redux/action/fetch.js
+const base = 'localhost:8080/api/';
+
+npm run build
+node server/index.js
+npm start
+```
+If there are any CORS problem, go to server/index.js and change res.header("Access-Control-Allow-Origin", "*");
+
 # Useful stuff used
 * [music-api](https://github.com/LIU9293/musicAPI), centralized Node.JS API SDK for xiami, netease, and qq music.
 * [Howler.js](https://github.com/goldfire/howler.js), Javascript audio library for the modern web.
