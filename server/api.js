@@ -87,4 +87,17 @@ router.get('/get/playlist/:vendor', (req, res) => {
     .catch(err => res.send(err));
 });
 
+router.get('/search/suggestion/:key', (req, res) => {
+  let key = req.params.key;
+  MusicApi.searchSuggestion(key)
+    .then(data => res.json(data))
+    .catch(err => res.send(err));
+});
+
+router.get('/suggestion/xiami', (req, res) => {
+  MusicApi.getDailySuggest()
+    .then(data => res.json(data))
+    .catch(err => res.send(err));
+});
+
 module.exports = router;
