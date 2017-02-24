@@ -46,13 +46,13 @@ const styles = {
     padding: '2px 6px',
     fontSize: '12px',
     marginLeft: '10px',
-    minWidth: '60px',
+    minWidth: '20px',
   }
 }
 const name = {
-  qq: 'QQ',
-  netease: '网易',
-  xiami: '虾米'
+  qq: 'qq',
+  netease: 'net',
+  xiami: 'xia'
 }
 
 class SongListRow extends Component{
@@ -84,15 +84,10 @@ class SongListRow extends Component{
     }
     if(needPay && vendor==='netease'){
       notification.warning({
-        message: '音乐咖还不支持网易付费歌曲哦~',
+        message: '音乐咖还搜不到这首歌~',
         description: '尝试其他搜索源试试？'
       });
       return;
-    } else if (needPay){
-      notification.warning({
-        message: '您尝试添加了一首付费歌曲~',
-        description: '音乐咖会尝试帮您加载!'
-      });
     }
     this.addSong(vendor, data);
   }
@@ -114,7 +109,7 @@ class SongListRow extends Component{
   downloadSong(vendor, songID, albumID, songName, needPay){
     if(needPay && vendor === 'netease'){
       notification.warning({
-        message: '音乐咖还不支持网易付费歌曲哦~',
+        message: '音乐咖还搜不到这首歌~',
         description: '尝试其他搜索源试试？'
       });
       return;
@@ -147,15 +142,15 @@ class SongListRow extends Component{
       <div style={{...styles.row, backgroundColor: this.state.bgColor}}>
         <div style={styles.name}>
           {`${this.props.index + 1}.  ${this.props.name || ''}`}
-          {
+          {/*
             this.props.needPay && this.props.needPay !== false
-            ? <div style={styles.payBadge}>{`${name[this.props.vendor]}付费`}</div>
-            : null
+            ? <div style={styles.payBadge}>{`*`}</div>
+            : null*/
           }
-          {
+          {/*
             this.props.offline
-            ? <div style={styles.payBadge}>{`${name[this.props.vendor]}已下线`}</div>
-            : null
+            ? <div style={styles.payBadge}>{`*`}</div>
+            : null*/
           }
         </div>
         <div style={styles.album}>

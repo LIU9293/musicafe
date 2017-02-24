@@ -126,15 +126,10 @@ class SearchResultRow extends Component {
     }
     if(needPay && vendor==='netease'){
       notification.warning({
-        message: '音乐咖还不支持网易付费歌曲哦~',
+        message: '音乐咖还搜不到这首歌~',
         description: '尝试其他搜索源试试？'
       });
       return;
-    } else if (needPay){
-      notification.warning({
-        message: '您尝试添加了一首付费歌曲~',
-        description: '音乐咖会尝试帮您加载!'
-      });
     }
     this.addSong(vendor, data);
   }
@@ -158,10 +153,10 @@ class SearchResultRow extends Component {
           }}
           key={index}
         >
-          {
+          {/*
             item.needPay
             ? <div style={styles.payBadge}>{`${badgeName[vendor]}付费`}</div>
-            : null
+            : null*/
           }
           <div style={styles.blur}>
             <div className="ellipsis" style={styles.name}>{item.name}</div>
