@@ -20,37 +20,37 @@ const styles = {
 }
 
 class Footer extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      xiamiDisabled: false,
-      neteaseDisabled: false,
-      qqDisabled: false
-    };
-    this.changeVendor = this.changeVendor.bind(this);
-  }
-  changeVendor(vendor, e){
-    if(e){
-      if(this.props.searchVendor.length === 1){
-        // if only one left and check one, undisable all
-        this.setState({
-          xiamiDisabled: false,
-          qqDisabled: false,
-          neteaseDisabled: false,
-        });
-      }
-      this.props.updateVendor(this.props.searchVendor.concat([vendor]));
-    } else {
-      if(this.props.searchVendor.length === 2){
-        // if only two left and uncheck one, disable another
-        let another = [...this.props.searchVendor].filter(i => i !== vendor)[0];
-        this.setState({
-          [another + 'Disabled']: true
-        });
-      }
-      this.props.updateVendor(this.props.searchVendor.filter(i => i !== vendor));
-    }
-  }
+  // constructor(props){
+  //   super(props);
+  //   // this.state = {
+  //   //   xiamiDisabled: false,
+  //   //   neteaseDisabled: false,
+  //   //   qqDisabled: true
+  //   // };
+  //   //this.changeVendor = this.changeVendor.bind(this);
+  // }
+  // changeVendor(vendor, e){
+  //   if(e){
+  //     if(this.props.searchVendor.length === 1){
+  //       // if only one left and check one, undisable all
+  //       this.setState({
+  //         xiamiDisabled: false,
+  //         qqDisabled: false,
+  //         neteaseDisabled: false,
+  //       });
+  //     }
+  //     this.props.updateVendor(this.props.searchVendor.concat([vendor]));
+  //   } else {
+  //     if(this.props.searchVendor.length === 2){
+  //       // if only two left and uncheck one, disable another
+  //       let another = [...this.props.searchVendor].filter(i => i !== vendor)[0];
+  //       this.setState({
+  //         [another + 'Disabled']: true
+  //       });
+  //     }
+  //     this.props.updateVendor(this.props.searchVendor.filter(i => i !== vendor));
+  //   }
+  // }
   render () {
     return(
       <div className="footer">
@@ -61,30 +61,23 @@ class Footer extends Component {
           </a>
         </div>
         <div style={styles.right}>
-            <div style={styles.searchVendor}>
-              搜索源：
-            </div>
-            <Checkbox
-              default={true}
-              onCheck={(e) => this.changeVendor('netease', e)}
-              disabled={this.state.neteaseDisabled}
-            >
-              网易云
-            </Checkbox>
-            <Checkbox
-              default={true}
-              onCheck={(e) => this.changeVendor('xiami', e)}
-              disabled={this.state.xiamiDisabled}
-            >
-              虾米
-            </Checkbox>
-            <Checkbox
-              default={true}
-              onCheck={(e) => this.changeVendor('qq', e)}
-              disabled={this.state.qqDisabled}
-            >
-              QQ音乐
-            </Checkbox>
+          <div style={styles.searchVendor}>
+            搜索源：
+          </div>
+          <Checkbox
+            default={true}
+            onCheck={() => {}}
+            disabled={true}
+          >
+            Net
+          </Checkbox>
+          <Checkbox
+            default={true}
+            onCheck={() => {}}
+            disabled={true}
+          >
+            Xia
+          </Checkbox>
         </div>
       </div>
     )

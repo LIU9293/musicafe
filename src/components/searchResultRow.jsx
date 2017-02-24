@@ -4,14 +4,14 @@ import { Pagination, notification } from 'antd';
 import api from '../redux/action/fetch';
 import { browserHistory } from 'react-router';
 const name = {
-  qq: 'QQ音乐',
-  netease: '网易云音乐',
-  xiami: '虾米音乐'
+  qq: 'qq',
+  netease: 'NET',
+  xiami: 'XIA'
 }
 const badgeName = {
-  qq: 'QQ',
-  netease: '网易',
-  xiami: '虾米'
+  qq: 'qq',
+  netease: 'net',
+  xiami: 'xia'
 }
 
 const styles = {

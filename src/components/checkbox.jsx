@@ -18,14 +18,14 @@ class Checkbox extends Component{
   }
 
   check(){
-    if(!this.props.disabled){
-      this.props.onCheck(!this.state.checked);
-      this.setState({checked: !this.state.checked});
-    } else {
-      notification.open({
-        message: '最少需选择一个搜索内容~ 🔍'
-      })
-    }
+    // if(!this.props.disabled){
+    //   this.props.onCheck(!this.state.checked);
+    //   this.setState({checked: !this.state.checked});
+    // } else {
+    //   notification.open({
+    //     message: '最少需选择一个搜索内容~ 🔍'
+    //   })
+    // }
   }
 
   render(){
