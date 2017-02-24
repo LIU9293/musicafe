@@ -6,12 +6,17 @@
 
 <p align="center"><img width=80% src="/public/capture.jpg"></p>
 
+## 2月24号更新
+
+前两天一个导航网站转载了这个网站，导致流量一下增加好多，被腾讯音乐合作的监管机构监测到。
+所以QQ已经下线...😢
+
 # Functions
-* Search netease, xiami, qq songs, albums, playlists.
+* Search netease, xiami, ~~qq~~ songs, albums, playlists.
 * Get albums, playlists details.
 * Add songs to your list and play.
-* (Unsuggested) Add VIP songs(neet pay) of xiami, qq, example [here](https://musicafe.co/album/xiami/2102661271).
-* (Unsuggested) Add unauthorized songs of xiami, qq, example [here](https://musicafe.co/album/qq/0033AjP71h7iIR).
+* (Unsuggested) Add VIP songs(neet pay) of xiami, ~~qq~~, example [here](https://musicafe.co/album/xiami/2102661271).
+* (Unsuggested) Add unauthorized songs of xiami, ~~qq~~, example [here](https://musicafe.co/album/qq/0033AjP71h7iIR).
 * Download songs in albums and playlists page.
 
 # Run local
@@ -22,7 +27,7 @@ cd musicafe
 npm install
 npm run https (not npm start!!!)
 ```
-Because the API server is using https, so http development environment may cause CORS issue. 
+Because the API server is using https, so http development environment may cause CORS issue.
 **PLEASE DO delete the baidu analytic code in public/index.html as well !!!**
 
 **Use your own API server**
@@ -43,7 +48,7 @@ If there are any CORS problem, go to server/index.js and change res.header("Acce
 * [Ant design](ant.design)
 
 # HTTPS
-The website is using https, but all media files in netease, xiami and qq are transferred via http, so the https badge 
+The website is using https, but all media files in netease, xiami and qq are transferred via http, so the https badge
 will grey out after you listen to something. T.T
 
 # TODOS
