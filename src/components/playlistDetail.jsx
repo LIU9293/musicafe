@@ -56,6 +56,9 @@ class AlbumDetail extends Component{
   }
   componentDidMount(){
     console.log(browserHistory);
+    if(this.props.params.vendor === 'qq'){
+      return;
+    }
     if(this.state.vendor && this.state.id){
       getplaylist(this.state.vendor, this.state.id)
         .then(res => {
