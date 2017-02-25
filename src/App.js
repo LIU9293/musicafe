@@ -1,15 +1,19 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import store from './redux/store';
-import Router from './components/router';
-import { browserHistory } from 'react-router';
+import Heart from 'react-icons/fa/heart-o';
 
 class App extends React.Component{
   render(){
     return(
-      <Provider store={store}>
-        <Router history={browserHistory} />
-      </Provider>
+      <div className="remove">
+        <p className="hue">由于可能涉及到一些版权问题，musicafe已经下线，sorry~</p>
+        <div className="hr" />
+        <p className="hue">
+          originally made with <Heart className="heart" /> on 
+          <a style={{marginLeft: '5px'}} href="https://github.com/LIU9293/musicafe" target="_blank">
+            github
+          </a>
+        </p>
+      </div>
     )
   }
 }
