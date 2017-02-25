@@ -19,7 +19,7 @@ const searchResultInitState = {
 const searchKeyInitState = {
   key: null,
   type: 'album',
-  vendor: ['xiami', 'netease']
+  vendor: ['xiami', 'qq', 'netease']
 }
 
 export const searchKey = (state = searchKeyInitState, action) => {

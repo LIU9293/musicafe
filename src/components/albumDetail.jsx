@@ -54,9 +54,6 @@ class AlbumDetail extends Component{
     };
   }
   componentDidMount(){
-    if(this.props.params.vendor === 'qq'){
-      return;
-    }
     if(this.state.vendor && this.state.id){
       getalbum(this.state.vendor, this.state.id)
         .then(res => {
