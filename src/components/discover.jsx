@@ -3,7 +3,7 @@ import Loading from './loading';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Carousel, Pagination } from 'antd';
-const URL = 'https://musicafe.co/suggestion.json';
+import suggestion from '../lib/suggestion';
 
 const styles = {
   carouselBox: {
@@ -105,45 +105,40 @@ class Dicover extends Component {
   }
 
   getSuggestion(){
-    fetch(URL)
-      .then(res => res.json())
-      .then(json => {
-        /**
-         * random some albums for the carousel
-         */
-        let albumItems = [...json.album];
-        let carouselItems = [];
-        for(let i = 0; i < 9; i++){
-          let randomItem = albumItems[Math.floor(Math.random()*(albumItems.length))];
-          carouselItems.push(randomItem);
-          albumItems = albumItems.filter(i => i.id !== randomItem.id);
-        }
-        console.log(carouselItems, albumItems);
+    /**
+     * random some albums for the carousel
+     */
+    let albumItems = [...suggestion.album];
+    let carouselItems = [];
+    for(let i = 0; i < 9; i++){
+      let randomItem = albumItems[Math.floor(Math.random()*(albumItems.length))];
+      carouselItems.push(randomItem);
+      albumItems = albumItems.filter(i => i.id !== randomItem.id);
+    }
+    console.log(carouselItems, albumItems);
 
-        /**
-         * combine other albums and playlist for the suggestion
-         */
-        albumItems = albumItems.map(i => {
-          return {
-            ...i,
-            type: 'album',
-          }
-        });
-        let playlistItems = json.playlist.map(i => {
-          return {
-            ...i,
-            type: 'playlist',
-          }
-        });
-        this.setState({
-          loaded: true,
-          carouselItems,
-          suggestionItems: [...albumItems, ...playlistItems],
-        }, () => {
-          this.props.transferDiscoverData(this.state);
-        });
-      })
-      .catch(err => console.log(err))
+    /**
+     * combine other albums and playlist for the suggestion
+     */
+    albumItems = albumItems.map(i => {
+      return {
+        ...i,
+        type: 'album',
+      }
+    });
+    let playlistItems = suggestion.playlist.map(i => {
+      return {
+        ...i,
+        type: 'playlist',
+      }
+    });
+    this.setState({
+      loaded: true,
+      carouselItems,
+      suggestionItems: [...albumItems, ...playlistItems],
+    }, () => {
+      this.props.transferDiscoverData(this.state);
+    });
   }
 
   renderCarousel(){

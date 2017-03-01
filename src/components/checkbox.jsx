@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { notification } from 'antd';
 
 class Checkbox extends Component{
 

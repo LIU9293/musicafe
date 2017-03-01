@@ -49,11 +49,6 @@ const styles = {
     minWidth: '20px',
   }
 }
-const name = {
-  qq: 'qq',
-  netease: 'net',
-  xiami: 'xia'
-}
 
 class SongListRow extends Component{
   constructor(props){

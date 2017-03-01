@@ -8,7 +8,7 @@ const compression = require('compression');
 
 //CORS
 app.all('*', (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://localhost:3000");
+    res.header("Access-Control-Allow-Origin", "*");
     next();
 });
 
@@ -28,4 +28,4 @@ app.get('*', (req, res) => {
 
 app.listen(port);
 
-console.log("server started on port " + port);
+console.log("node server started on port " + port);

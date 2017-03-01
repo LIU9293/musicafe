@@ -8,11 +8,6 @@ const name = {
   netease: 'NET',
   xiami: 'XIA'
 }
-const badgeName = {
-  qq: 'qq',
-  netease: 'net',
-  xiami: 'xia'
-}
 
 const styles = {
   cell: {
